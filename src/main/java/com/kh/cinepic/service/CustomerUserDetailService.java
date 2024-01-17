@@ -1,4 +1,4 @@
-package com.kh.cinepic.Service;
+package com.kh.cinepic.service;
 
 import com.kh.cinepic.entity.Admin;
 import com.kh.cinepic.entity.Member;
