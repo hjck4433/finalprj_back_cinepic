@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "movie_comment")
@@ -15,7 +16,7 @@ public class MovieComment {
     private Long id;
 
     // 회원
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -35,4 +36,13 @@ public class MovieComment {
     // 텍스트 평가 - 100자 제한 (한국어 기준)
     @Column(name = "rating_text", nullable = false, length = 300)
     private String ratingText;
+
+    // 등록날짜
+    @Column(name = "comment_reg_date")
+    private LocalDateTime commentRegDate;
+
+    @PrePersist
+    public void prepersist() {
+        commentRegDate = LocalDateTime.now();
+    }
 }

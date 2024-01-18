@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter @Setter
 public class MovieCommentDto {
     private Long commentId;
+    private Long movieId;
     private String image;
     private String alias;
     private String ratingField;
