@@ -25,25 +25,25 @@ public class Theater {
     @Column(name ="theater_name", nullable = false)
     private String theaterName;
 
-    @Column(name ="screens", nullable = false)
+    @Column(name ="screens")
     private int screens;
 
-    @Column(name ="seats", nullable = false)
+    @Column(name ="seats")
     private int seats;
 
-    @Column(name ="screen_film", nullable = false)
+    @Column(name ="screen_film")
     private int screenFilm;
 
-    @Column(name ="screen_2d", nullable = false)
+    @Column(name ="screen_2d")
     private int screen2D;
 
-    @Column(name ="screen_3d", nullable = false)
+    @Column(name ="screen_3d")
     private int screen3D;
 
-    @Column(name ="screen_4d", nullable = false)
+    @Column(name ="screen_4d")
     private int screen4D;
 
-    @Column(name ="screen_imax", nullable = false)
+    @Column(name ="screen_imax")
     private int screenImax;
 
     @Column(name ="is_special_screen", columnDefinition = "TINYINT(1)")
