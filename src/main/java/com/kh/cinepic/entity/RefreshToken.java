@@ -20,7 +20,7 @@ public class RefreshToken {
     private String refreshToken;
 
     @Column(name="refresh_token_exp")
-    private String refreshTokenExpiresIn;
+    private Long refreshTokenExpiresIn;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
