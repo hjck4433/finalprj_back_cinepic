@@ -36,10 +36,10 @@ public class EmailController {
         System.out.println("202401 : " + tempPw);
 
         // 이메일 디자인 부분
-        String htmlContent = "<div style=\"margin: auto; padding: 50px; text-align: center; width: 700px; height: 200px; background-color: #0c134f; border-radius: 20px;\">"
-                + "<p style=\"font-size: 30px; color: violet; font-weight: 600;\">Cine Pic에 오신 것을 환영합니다!</p>"
-                + "<p style=\"font-size: 16px; color: #d4adfc;\">요청하신 인증번호를 보내드립니다.</p>"
-                + "<div style=\"font-size: 20px; color: #ccc;\">" + tempPw + "</div>"
+        String htmlContent = "<div style=\"margin: auto; padding: 50px; text-align: center; width: 700px; height: 200px; background-color: #EF642F; border-radius: 20px;\">"
+                + "<p style=\"font-size: 30px; color: #FAF9F1; font-weight: 600;\">Cine Pic에 오신 것을 환영합니다!</p>"
+                + "<p style=\"font-size: 16px; color: #CCCCCC;\">요청하신 인증번호를 보내드립니다.</p>"
+                + "<div style=\"font-size: 20px; color: #333333;\">" + tempPw + "</div>"
                 + "</div>";
 
         ;
