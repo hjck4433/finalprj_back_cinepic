@@ -11,10 +11,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,23 +99,27 @@ public class MovieCommentService {
     }
 
     // 관람평 페이지 수 count
-//    public int getTotalMovieCommentPages(Pageable pageable, Long movieCommentId) {
-//        MovieComment movieComment = movieCommentRepository.findById(movieCommentId).orElseThrow(
-//                () -> new RuntimeException("해당하는 movieCommentId값이 없습니다." + movieCommentId)
-//        );
-//        Page<MovieComment> movieCommentPage = movieCommentRepository.findByMovieComment(movieComment, pageable);
-//        return movieCommentPage.getTotalPages();
-//    }
+    public int getTotalMovieCommentPages(Pageable pageable, Long movieId) {
+        Movie movie = movieRepository.findById(movieId).orElseThrow(
+                () -> new RuntimeException("해당하는 영화가 없습니다." + movieId)
+        );
+        Page<MovieComment> movieCommentPage = movieCommentRepository.findByMovie(movie, pageable);
+        return movieCommentPage.getTotalPages();
+    }
 
     // 관람평 최신순 페이지네이션
-//    public List<MovieCommentDto> getPagedMovieComments(int page, int size, Long movieCommentId) {
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("commentRegdate")));
-//        MovieComment movieComment = movieCommentRepository.findById(movieCommentId).orElseThrow(
-//                () -> new RuntimeException("해당하는 movieCommentId값이 없습니다." + movieCommentId)
-//        );
-//        List<MovieComment> movieComments = movieCommentRepository.findByMovieComment(movieComment, pageable).getContent();
-//        return
-//    }
+    public List<MovieCommentDto> getPagedMovieComments(int page, int size, Long movieId) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("commentRegdate")));
+        Movie movie = movieRepository.findById(movieId).orElseThrow(
+                () -> new RuntimeException("해당하는 movieId값이 없습니다." + movieId)
+        );
+        List<MovieComment> movieComments = movieCommentRepository.findByMovie(movie, pageable).getContent();
+        List<MovieCommentDto> movieCommentDtos = new ArrayList<>();
+        for(MovieComment movieComment : movieComments) {
+            movieCommentDtos.add(convertEntityToDto(movieComment));
+        }
+        return movieCommentDtos;
+    }
     // movieComment entity → DTO로 변환
     private MovieCommentDto convertEntityToDto (MovieComment movieComment) {
         MovieCommentDto movieCommentDto = new MovieCommentDto();
