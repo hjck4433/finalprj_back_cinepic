@@ -18,7 +18,8 @@ public class Prefer {
     @Column(name = "prefer_id")
     private Long id;
 
-    @Column(name = "member_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @Column(name ="director_name", nullable = false)
