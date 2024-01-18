@@ -15,6 +15,7 @@ public class MovieComment {
     private Long id;
 
     // 회원
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
