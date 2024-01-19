@@ -107,7 +107,7 @@ public class MovieCommentService {
         return movieCommentPage.getTotalPages();
     }
 
-    // 관람평 최신순 페이지네이션
+    // 관람평 최신순 페이지 네이션
     public List<MovieCommentDto> getPagedMovieComments(int page, int size, Long movieId) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("commentRegdate")));
         Movie movie = movieRepository.findById(movieId).orElseThrow(

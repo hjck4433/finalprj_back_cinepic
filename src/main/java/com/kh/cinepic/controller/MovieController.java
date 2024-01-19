@@ -1,7 +1,7 @@
 package com.kh.cinepic.controller;
 
 import com.kh.cinepic.dto.MovieCommentDto;
-import com.kh.cinepic.security.SecurityUtil;
+import com.kh.cinepic.dto.MoviePostDto;
 import com.kh.cinepic.service.MovieCommentService;
 import com.kh.cinepic.service.MoviePostService;
 import com.kh.cinepic.service.MovieService;
@@ -24,40 +24,38 @@ public class MovieController {
 
     // movie
 
-    // movie_post
 
-    // movie_comment
-    // 관람평 저장
-    @PostMapping("/new")
-    public ResponseEntity<Boolean> saveMovieComment(@RequestBody MovieCommentDto movieCommentDto) {
-        log.info("댓글 저장 진입");
-        Long id = SecurityUtil.getCurrentMemberId();
-        return ResponseEntity.ok(movieCommentService.saveMovieComment(movieCommentDto, id));
+    // movie_post
+    // 포스트 총 페이지 수
+    @GetMapping("/post/page/{movieId}")
+    public ResponseEntity<Integer> getTotalMoviePostPages(@PathVariable Long movieId,
+                                                          @RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "5") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        int pageCnt = moviePostService.getTotalMoviePostPages(pageRequest, movieId);
+        return ResponseEntity.ok(pageCnt);
     }
 
+    // 포스트 페이지 네이션
+    @GetMapping("/post/page/list/{movieId}")
+    public ResponseEntity<List<MoviePostDto>> getPagedMoviePostList(@PathVariable Long movieId,
+                                                                    @RequestParam(defaultValue = "0") int page,
+                                                                    @RequestParam(defaultValue = "5") int size) {
+        List<MoviePostDto> list = moviePostService.getPagedMoviePostList(page, size, movieId);
+        return ResponseEntity.ok(list);
+    }
+
+
+    // movie_comment
     // 관람평 전체 리스트 조회
-    @GetMapping("/{id}")
+    @GetMapping("/comment/{id}")
     public ResponseEntity<List<MovieCommentDto>> getMovieComment(@PathVariable Long id) {
         List<MovieCommentDto> list = movieCommentService.getMovieComment(id);
         return ResponseEntity.ok(list);
     }
 
-    // 관람평 수정
-    @PostMapping("/modify")
-    public ResponseEntity<Boolean> modifyMovieComment(@RequestBody MovieCommentDto movieCommentDto) {
-        boolean result = movieCommentService.modifyMovieComment(movieCommentDto);
-        return ResponseEntity.ok(result);
-    }
-
-    // 관람평 삭제
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> deleteMovieComment(@PathVariable Long id) {
-        boolean result = movieCommentService.deleteMovieComment(id);
-        return ResponseEntity.ok(result);
-    }
-
     // 총 페이지 수
-    @GetMapping("/page/{movieId}")
+    @GetMapping("/comment/page/{movieId}")
     public ResponseEntity<Integer> getTotalMovieCommentPages(@PathVariable Long movieId,
                                                              @RequestParam(defaultValue = "0") int page,
                                                              @RequestParam(defaultValue = "5") int size) {
@@ -66,32 +64,12 @@ public class MovieController {
         return ResponseEntity.ok(pageCnt);
     }
 
-    // 페이지네이션
-    @GetMapping("page/list/{movieId}")
+    // 페이지 네이션
+    @GetMapping("/comment/page/list/{movieId}")
     public ResponseEntity<List<MovieCommentDto>> getPagedMovieComments(@PathVariable Long movieId,
                                                                        @RequestParam(defaultValue = "0") int page,
                                                                        @RequestParam(defaultValue = "5") int size) {
         List<MovieCommentDto> list = movieCommentService.getPagedMovieComments(page, size, movieId);
         return ResponseEntity.ok(list);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
