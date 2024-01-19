@@ -1,6 +1,7 @@
 package com.kh.cinepic.service;
 
 import com.kh.cinepic.dto.MemberReqDto;
+import com.kh.cinepic.dto.MemberResDto;
 import com.kh.cinepic.entity.Kakao;
 import com.kh.cinepic.entity.Member;
 import com.kh.cinepic.entity.RefreshToken;
@@ -25,8 +26,8 @@ public class MemberService {
 
 
     // 회원 상세 조회
-    public MemberReqDto getMemberDetail(Long id){
-        Member member = memberRepository.findById().orElseThrow(()-> new RuntimeException("해당 회원이 존재하지 않습니다."));
+    public MemberResDto getMemberDetail(Long id){
+        Member member = memberRepository.findById(id).orElseThrow(()-> new RuntimeException("해당 회원이 존재하지 않습니다."));
         return convertEntityToDto(member);
     }
 
@@ -96,16 +97,16 @@ public class MemberService {
 
 
     // 회원 엔티티를 회원 DTO로 변환
-    private MemberReqDto convertEntityToDto(Member member){
-        MemberReqDto memberReqDto = new MemberReqDto();
-        memberReqDto.setEmail(member.getEmail());
-        memberReqDto.setName(member.getName());
-        memberReqDto.setAlias(member.getAlias());
-        memberReqDto.setPhone(member.getPhone());
-        memberReqDto.setAddr(member.getAddr());
-        memberReqDto.setImage(member.getImage());
-        memberReqDto.setIsKakao(member.isKakao());
-        memberReqDto.setIsMembership(member.isMembership());
-        return memberReqDto;
+    private MemberResDto convertEntityToDto(Member member){
+        MemberResDto memberResDto = new MemberResDto();
+        memberResDto.setEmail(member.getEmail());
+        memberResDto.setName(member.getName());
+        memberResDto.setAlias(member.getAlias());
+        memberResDto.setPhone(member.getPhone());
+        memberResDto.setAddr(member.getAddr());
+        memberResDto.setImage(member.getImage());
+        memberResDto.setIsMembership(member.isMembership());
+        memberResDto.setIsKakao(member.isKakao());
+        return memberResDto;
     }
 }
