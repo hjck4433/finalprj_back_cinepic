@@ -52,7 +52,7 @@ public class MovieCommentService {
     }
 
     // 관람평 전체 조회
-    public List<MovieCommentDto> getMovieComment() {
+    public List<MovieCommentDto> getMovieComment(Long id) {
         List<MovieComment> movieComments = movieCommentRepository.findAll();
         List<MovieCommentDto> movieCommentDtos = new ArrayList<>();
         for (MovieComment movieComment : movieComments) {
