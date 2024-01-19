@@ -26,5 +26,4 @@ public class MemberController {
             MemberResDto memberResDto = memberService.getMemberDetail(id);
             return ResponseEntity.ok(memberResDto);
         }
-    }
 }
