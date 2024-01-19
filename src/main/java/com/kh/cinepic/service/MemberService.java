@@ -23,6 +23,13 @@ public class MemberService {
     private final KakaoRepository kakaoRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
+
+    // 회원 상세 조회
+    public MemberReqDto getMemberDetail(Long id){
+        Member member = memberRepository.findById().orElseThrow(()-> new RuntimeException("해당 회원이 존재하지 않습니다."));
+        return convertEntityToDto(member);
+    }
+
     // 비밀번호 일치 체크
     public boolean isPassword(String password, Long id) {
         log.info("password : {}", password);
@@ -83,6 +90,22 @@ public class MemberService {
         }catch (Exception e){
             log.error("회원 탈퇴 처리 중 오류 발생");
             return false;
+
         }
+    }
+
+
+    // 회원 엔티티를 회원 DTO로 변환
+    private MemberReqDto convertEntityToDto(Member member){
+        MemberReqDto memberReqDto = new MemberReqDto();
+        memberReqDto.setEmail(member.getEmail());
+        memberReqDto.setName(member.getName());
+        memberReqDto.setAlias(member.getAlias());
+        memberReqDto.setPhone(member.getPhone());
+        memberReqDto.setAddr(member.getAddr());
+        memberReqDto.setImage(member.getImage());
+        memberReqDto.setIsKakao(member.isKakao());
+        memberReqDto.setIsMembership(member.isMembership());
+        return memberReqDto;
     }
 }
