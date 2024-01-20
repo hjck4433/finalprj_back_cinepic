@@ -22,7 +22,7 @@ public class ChatRoomResDto {
     private Set<WebSocketSession> sessions;
     // 세션 수가 0인지 확인
     public boolean isSessionEmpty() {
-        return this.sessions.isEmpty();
+        return this.sessions.size() == 0;
     }
 
     @Builder

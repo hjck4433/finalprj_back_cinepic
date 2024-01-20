@@ -36,7 +36,7 @@ public class ChatService {
             return null;
         }
     }
-    public ChatRoomResDto findRoomById(String roomId) {
+    public ChatRoomResDto findRoomById(String roomId){
         return chatRooms.get(roomId);
     }
 
@@ -60,7 +60,7 @@ public class ChatService {
 
         return chatRoom;
     }
-    
+
     // 채팅방 삭제
     public void removeRoom(String roomId) {
         ChatRoomResDto room = chatRooms.get(roomId);
@@ -76,7 +76,7 @@ public class ChatService {
     // 채팅방 입장
     public void addSessionAndHandleEnter(String roomId, WebSocketSession session, ChatMsgDto chatMsg) {
         ChatRoomResDto room = findRoomById(roomId);
-        if(room != null) {
+        if (room != null) {
             room.getSessions().add(session);
             if(chatMsg.getSender() != null) {
                 chatMsg.setMsg(chatMsg.getSenderAlias() + "님이 입장했습니다.");
@@ -87,7 +87,7 @@ public class ChatService {
     }
 
     // 채팅방 퇴장
-    public void removeSessionAndHandleExit(String roomId, WebSocketSession session, ChatMsgDto chatMsg) {
+    public void removeSessionAndHandleExit(String roomId, WebSocketSession session, ChatMsgDto chatMsg){
         ChatRoomResDto room = findRoomById(roomId);
         if (room != null) {
             room.getSessions().remove(session);
@@ -102,9 +102,8 @@ public class ChatService {
         }
     }
 
-
     // 메세지 보내기
-    public void sendMsgToAll(String roomId, ChatMsgDto msg) {
+    public void sendMsgToAll(String roomId, ChatMsgDto msg){
         ChatRoomResDto room = findRoomById(roomId);
         if(room != null) {
             for (WebSocketSession session : room.getSessions()) {
@@ -116,7 +115,7 @@ public class ChatService {
     public <T> void sendMsg(WebSocketSession session, T message) {
         try {
             session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-        }catch(IOException e) {
+        } catch(IOException e) {
             log.error(e.getLocalizedMessage(),e);
         }
     }
