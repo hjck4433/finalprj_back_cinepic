@@ -1,6 +1,9 @@
 package com.kh.cinepic.dto;
 
+import com.kh.cinepic.entity.Theater;
+
 public class TheaterDto {
+    private Long theaterId;
     private String theaterName;
     private int screens;
     private int seats;
@@ -15,4 +18,5 @@ public class TheaterDto {
     private String theaterUrl;
     private Double latitude;
     private Double longitude;
+
 }

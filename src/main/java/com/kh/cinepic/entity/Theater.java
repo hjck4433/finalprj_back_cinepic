@@ -1,8 +1,6 @@
 package com.kh.cinepic.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,10 +9,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class Theater {
     @Id
     @Column(name = "theater_id")
-    private Long id;
+    private Long theaterId;
 
     @Column(name ="province", nullable = false)
     private String province;
@@ -55,13 +54,34 @@ public class Theater {
     @Column(name ="theater_phone", nullable = false)
     private String theaterPhone;
 
-    @Column(name ="theater_url", nullable = false)
+    @Column(name ="theater_url")
     private String theaterUrl;
 
     @Column(name ="latitude", nullable = false)
-    private Double latitude;
+    private double latitude;
 
     @Column(name ="longitude", nullable = false)
-    private Double longitude;
+    private double longitude;
+
+    @Builder
+    public Theater(Long theaterId, String province, String city, String theaterName, int screens, int seats, int screenFilm, int screen2D, int screen3D, int screen4D, int screenImax, Boolean isSpecialScreen, String theaterAddr, String theaterPhone, String theaterUrl, double latitude, double longitude) {
+        this.theaterId = theaterId;
+        this.province = province;
+        this.city = city;
+        this.theaterName = theaterName;
+        this.screens = screens;
+        this.seats = seats;
+        this.screenFilm = screenFilm;
+        this.screen2D = screen2D;
+        this.screen3D = screen3D;
+        this.screen4D = screen4D;
+        this.screenImax = screenImax;
+        this.isSpecialScreen = isSpecialScreen;
+        this.theaterAddr = theaterAddr;
+        this.theaterPhone = theaterPhone;
+        this.theaterUrl = theaterUrl;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 
 }
