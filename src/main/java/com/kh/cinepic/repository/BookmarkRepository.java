@@ -12,5 +12,8 @@ import java.util.Optional;
 
 @Repository
 public interface BookmarkRepository extends JpaRepository <Bookmark, Long> {
-   
+   boolean existsByMemberAndMovie(Member member, Movie movie);
+   Optional<Bookmark> findByMemberAndMovie(Member member, Movie movie);
+
+   Page<Bookmark> findAllByMember(Member member, Pageable pageable);
 }
