@@ -71,25 +71,6 @@ public class TheaterService {
 
         }
     }
-    // 지도 "지역" 키워드 검색
-    public List<TheaterDto> getSearchProvince(String keyword) {
-        List<Theater> theaters = theaterRepository.findByProvinceContaining(keyword);
-        List<TheaterDto> theaterDtos = new ArrayList<>();
-        for (Theater theater : theaters) {
-            theaterDtos.add(convertEntityToDto(theater));
-        }
-        return theaterDtos;
-    }
-
-    // 지도 "도시" 키워드 검색
-    public List<TheaterDto> getSearchCity(String keyword) {
-        List<Theater> theaters = theaterRepository.findByCityContaining(keyword);
-        List<TheaterDto> theaterDtos = new ArrayList<>();
-        for (Theater theater : theaters) {
-            theaterDtos.add(convertEntityToDto(theater));
-        }
-        return theaterDtos;
-    }
     // 지도 "주소" 키워드 검색
     public List<TheaterDto> getSearchTheaterAddr(String keyword) {
         List<Theater> theaters = theaterRepository.findByTheaterAddrContaining(keyword);

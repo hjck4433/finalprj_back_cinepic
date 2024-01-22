@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TheaterRepository extends JpaRepository<Theater,Long> {
-    List<Theater> findByProvinceContaining(String keyword);
-    List<Theater> findByCityContaining(String keyword);
     List<Theater> findByTheaterAddrContaining(String keyword);
 }

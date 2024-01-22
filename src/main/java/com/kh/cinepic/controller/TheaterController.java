@@ -20,22 +20,6 @@ import java.util.List;
 public class TheaterController {
     private final TheaterService theaterService;
 
-    // 지도 "지역" 키워드 검색
-    @GetMapping("/searchProvince")
-    public ResponseEntity<List<TheaterDto>> getSearchProvince(@RequestParam String keyword) {
-        log.info("provinceKeyword : ", keyword);
-        List<TheaterDto> list = theaterService.getSearchProvince(keyword);
-        return ResponseEntity.ok(list);
-    }
-
-    // 지도 "도시" 키워드 검색
-    @GetMapping("/searchCity")
-    public ResponseEntity<List<TheaterDto>> getSearchCity(@RequestParam String keyword) {
-        log.info("cityKeyword : ",keyword);
-        List<TheaterDto> list = theaterService.getSearchCity(keyword);
-        return ResponseEntity.ok(list);
-    }
-
     // 지도 "주소" 키워드 검색
     @GetMapping("/searchTheaterAddr")
     public ResponseEntity<List<TheaterDto>> getSearchTheaterAddr(@RequestParam String keyword) {
