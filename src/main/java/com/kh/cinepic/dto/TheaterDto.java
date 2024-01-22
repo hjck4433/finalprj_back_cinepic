@@ -1,7 +1,15 @@
 package com.kh.cinepic.dto;
 
-import com.kh.cinepic.entity.Theater;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TheaterDto {
     private Long theaterId;
     private String theaterName;

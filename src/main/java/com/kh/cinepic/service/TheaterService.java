@@ -1,5 +1,6 @@
 package com.kh.cinepic.service;
 
+import com.kh.cinepic.dto.TheaterDto;
 import com.kh.cinepic.dto.TheaterReqDto;
 import com.kh.cinepic.entity.Theater;
 import com.kh.cinepic.repository.TheaterRepository;
@@ -15,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -69,8 +71,53 @@ public class TheaterService {
 
         }
     }
+    // 지도 "지역" 키워드 검색
+    public List<TheaterDto> getSearchProvince(String keyword) {
+        List<Theater> theaters = theaterRepository.findByProvinceContaining(keyword);
+        List<TheaterDto> theaterDtos = new ArrayList<>();
+        for (Theater theater : theaters) {
+            theaterDtos.add(convertEntityToDto(theater));
+        }
+        return theaterDtos;
+    }
 
-//    public List<TheaterDto> getSearch(String keyword) {
-//
-//    }
+    // 지도 "도시" 키워드 검색
+    public List<TheaterDto> getSearchCity(String keyword) {
+        List<Theater> theaters = theaterRepository.findByCityContaining(keyword);
+        List<TheaterDto> theaterDtos = new ArrayList<>();
+        for (Theater theater : theaters) {
+            theaterDtos.add(convertEntityToDto(theater));
+        }
+        return theaterDtos;
+    }
+    // 지도 "주소" 키워드 검색
+    public List<TheaterDto> getSearchTheaterAddr(String keyword) {
+        List<Theater> theaters = theaterRepository.findByTheaterAddrContaining(keyword);
+        List<TheaterDto> theaterDtos= new ArrayList<>();
+        for (Theater theater : theaters) {
+            theaterDtos.add(convertEntityToDto(theater));
+        }
+        return theaterDtos;
+    }
+
+    // Entity -> Dto 전환
+    private TheaterDto convertEntityToDto(Theater theater) {
+        TheaterDto theaterDto = new TheaterDto();
+        theaterDto.setTheaterId(theater.getTheaterId());
+        theaterDto.setTheaterName(theater.getTheaterName());
+        theaterDto.setScreens(theater.getScreens());
+        theaterDto.setSeats(theater.getSeats());
+        theaterDto.setScreenFilm(theater.getScreenFilm());
+        theaterDto.setScreen2D(theater.getScreen2D());
+        theaterDto.setScreen3D(theater.getScreen3D());
+        theaterDto.setScreen4D(theater.getScreen4D());
+        theaterDto.setScreenImax(theater.getScreenImax());
+        theaterDto.setIsSpecialScreen(theater.getIsSpecialScreen());
+        theaterDto.setTheaterAddr(theater.getTheaterAddr());
+        theaterDto.setTheaterPhone(theater.getTheaterPhone());
+        theaterDto.setTheaterUrl(theater.getTheaterUrl());
+        theaterDto.setLatitude(theater.getLatitude());
+        theaterDto.setLongitude(theater.getLongitude());
+        return theaterDto;
+    }
 }
