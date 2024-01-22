@@ -81,6 +81,13 @@ public class TheaterService {
         return theaterDtos;
     }
 
+    // theaterId로 영화내용 상세 조회
+    public TheaterDto getTheaterListById(Long theaterId) {
+        log.info("theaterId" + theaterId);
+        Theater theater = theaterRepository.findById(theaterId).orElseThrow(() -> new RuntimeException("해당 영화내용이 존재하지 않습니다."));
+        return convertEntityToDto(theater);
+    }
+
     // Entity -> Dto 전환
     private TheaterDto convertEntityToDto(Theater theater) {
         TheaterDto theaterDto = new TheaterDto();

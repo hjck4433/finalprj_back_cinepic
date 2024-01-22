@@ -1,15 +1,14 @@
 package com.kh.cinepic.controller;
 
+import com.kh.cinepic.dto.MemberResDto;
 import com.kh.cinepic.dto.TheaterDto;
+import com.kh.cinepic.security.SecurityUtil;
 import com.kh.cinepic.service.TheaterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +27,11 @@ public class TheaterController {
         return ResponseEntity.ok(list);
     }
 
-
+    // 영화관 내용 상세 조회
+    @GetMapping("/theaterListById/{theaterId}")
+    public ResponseEntity<TheaterDto> getTheaterListById(@PathVariable Long theaterId) {
+        log.info("theaterId로 영화관 내용 상세 조회 : " + theaterId);
+        return ResponseEntity.ok(theaterService.getTheaterListById(theaterId));
+    }
 
 }
