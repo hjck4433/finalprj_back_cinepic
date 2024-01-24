@@ -46,6 +46,23 @@ public class MemberController {
         return ResponseEntity.ok(memberService.isPassword(password, id));
     }
 
+
+    // 멤버십 여부 업데이트
+    @PostMapping("/membership")
+    public ResponseEntity<Boolean> updateMembership(@RequestBody Map<String, Boolean> data){
+    Long id = SecurityUtil.getCurrentMemberId();
+    log.info("id : {}", id);
+    return ResponseEntity.ok(memberService.membershipSave(id));
+    }
+    // 멤버십 여부 가져오기
+    @GetMapping("/ismembership")
+    public ResponseEntity<Boolean> getIsMembership(){
+        Long id = SecurityUtil.getCurrentMemberId();
+        log.info("id : {}", id);
+        return ResponseEntity.ok(memberService.isMembership(id));
+    }
+
+
     // 회원 탈퇴
     @GetMapping("/withdraw")
     public ResponseEntity<Boolean> withdrawMember(){

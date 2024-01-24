@@ -71,7 +71,33 @@ public class MemberService {
             return false;
         }
     }
+    // 멤버십 여부 업데이트
+    public boolean membershipSave(Long id){
+        try{
+            Member member = memberRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다."));
+            member.setMembership(true);
+            memberRepository.save(member);
+            return true;
+        }catch (Exception e){
+            log.error("멤버십 가입 처리 중 오류 발생");
+            return false;
+        }
+    }
 
+    // 멤버십 여부 가져오기
+    public boolean isMembership(Long id) {
+        try {
+            Member member = memberRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다."));
+            boolean isMembership = member.isMembership();
+            log.info("isKiKi ? : {}", isMembership);
+            return isMembership;
+        }catch (Exception e){
+            log.error("멥버십 정보 가져 오는 중 오류 발생");
+            return false;
+        }
+    }
     // 회원 탈퇴
     public boolean withdrawMember(Long id){
         try {
