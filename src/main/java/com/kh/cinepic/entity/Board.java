@@ -46,7 +46,7 @@ public class Board {
     private String image;
 
     // 조회수
-    private int count;
+//    private int count;
 
     // 게시글의 댓글
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -54,9 +54,9 @@ public class Board {
 
     // 등록 날짜
     @Column(name = "board_reg_date")
-    private LocalDateTime regdate;
+    private LocalDateTime regDate;
 
     @PrePersist
-    public void prepersist() {regdate = LocalDateTime.now();}
+    public void prepersist() {regDate = LocalDateTime.now();}
 
 }
