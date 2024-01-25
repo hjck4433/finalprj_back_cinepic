@@ -50,6 +50,16 @@ public class BoardService {
         }
     }
 
+    // 게시물 전체 조회
+    public List<BoardResDto> getBoardList() {
+        List<Board> boards = boardRepository.findAll();
+        List<BoardResDto> boardResDtos = new ArrayList<>();
+        for (Board board : boards) {
+            boardResDtos.add(convertEntityToDto(board));
+        }
+        return boardResDtos;
+    }
+
     // 게시물 상세 조회
     public BoardResDto getBoardDetail(Long postId) {
         BoardResDto boardResDto = new BoardResDto();

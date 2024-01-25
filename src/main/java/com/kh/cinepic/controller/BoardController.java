@@ -19,7 +19,7 @@ import java.util.List;
 public class BoardController {
     private final BoardService boardService;
     // 새 게시글
-    @PostMapping("/post/new")
+    @PostMapping("/new")
     public ResponseEntity<Boolean> saveNewBoard(@RequestBody BoardReqDto boardReqDto) {
         log.info("새 게시글 저장");
         Long id = SecurityUtil.getCurrentMemberId();
@@ -27,17 +27,24 @@ public class BoardController {
     }
 
     // 게시글 수정
-    @PostMapping("/post/update")
+    @PostMapping("/update")
     public ResponseEntity<Boolean> updateBoard(@RequestBody BoardReqDto boardReqDto) {
         log.info("boardReqDto : ", boardReqDto);
         return ResponseEntity.ok(boardService.modifyBoard(boardReqDto));
     }
 
     // 게시글 삭제
-    @DeleteMapping("/post/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> deleteBoard(@PathVariable Long id) {
         log.info("삭제하는 게시글 id : {}", id);
         return ResponseEntity.ok(boardService.deleteBoard(id));
+    }
+
+    // 게시글 전체 조회
+    @GetMapping("/list")
+    public ResponseEntity<List<BoardResDto>> boardList() {
+        List<BoardResDto> list = boardService.getBoardList();
+        return ResponseEntity.ok(list);
     }
 
     // 게시글 상세 조회
