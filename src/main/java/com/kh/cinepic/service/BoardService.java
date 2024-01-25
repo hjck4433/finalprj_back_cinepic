@@ -10,6 +10,8 @@ import com.kh.cinepic.repository.CategoryRepository;
 import com.kh.cinepic.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -119,4 +121,21 @@ public class BoardService {
 //        boardResDto.setCount(board.getCount());
         return boardResDto;
     }
+
+    // Admin
+
+    // 게시글 리스트 조회(페이지네이션)
+    public List<BoardResDto> getAdminBoardList(int page, int size){
+        Pageable pageable = PageRequest.of(page,size);
+        List<Board> boards = boardRepository.findAll(pageable).getContent();
+        List<BoardResDto> boardList = new ArrayList<>();
+        for (Board board : boards){
+            boardList.add(convertEntityToDto(board));
+        }
+        return boardList;
+    }
+
+    // 총 페이지 조회
+    public int getAdminBoardPage(Pageable pageable){return boardRepository.findAll(pageable).getTotalPages();}
+
 }

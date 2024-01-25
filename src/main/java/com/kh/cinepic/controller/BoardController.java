@@ -6,6 +6,7 @@ import com.kh.cinepic.security.SecurityUtil;
 import com.kh.cinepic.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,4 +47,25 @@ public class BoardController {
         BoardResDto boardResDto = boardService.getBoardDetail(postId);
         return ResponseEntity.ok(boardResDto);
     }
+
+
+    // Admin
+    // 게시글 리스트 조회(페이지네이션)
+    @GetMapping("/admin/boardlist")
+    public ResponseEntity<List<BoardResDto>> adminBoardList(@RequestParam (defaultValue = "0")int page,
+                                                            @RequestParam(defaultValue = "10")int size){
+        return ResponseEntity.ok(boardService.getAdminBoardList(page, size));
+    }
+
+
+    // 총 페이지 조회
+    @GetMapping("/admin/totalpage")
+    public ResponseEntity<Integer> adminBoardPages(@RequestParam(defaultValue = "0")int page,
+                                                   @RequestParam(defaultValue = "10")int size){
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return ResponseEntity.ok(boardService.getAdminBoardPage(pageRequest));
+    }
+
+
+
 }
