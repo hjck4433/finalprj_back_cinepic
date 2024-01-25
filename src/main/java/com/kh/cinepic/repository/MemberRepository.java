@@ -18,4 +18,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmail(String email);
     Optional<Member> findByEmailAndPassword(String email, String password);
 
+    // 월별 가입자 수를 조회하는 쿼리
+    @Query("SELECT MONTH(m.regDate) as month, COUNT(m) as count FROM Member m WHERE YEAR(m.regDate) = YEAR(CURRENT_DATE) GROUP BY MONTH(m.regDate)")
+    List<Map<String, Object>> getMonthlySignupCount();
+
 }

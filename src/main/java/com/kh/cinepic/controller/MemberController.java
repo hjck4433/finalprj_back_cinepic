@@ -8,6 +8,7 @@ import com.kh.cinepic.security.SecurityUtil;
 import com.kh.cinepic.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,5 +71,41 @@ public class MemberController {
         log.info("id : {}", id);
         return ResponseEntity.ok(memberService.withdrawMember(id));
     }
+
+
+    // <Admin 영역>
+    // admin - 총 페이지 수 가져오기
+    @GetMapping("/admin/list/count")
+    public ResponseEntity<Integer> adminMemberCount(@RequestParam (defaultValue = "10") int page,
+                                                    @RequestParam(defaultValue = "0") int size){
+        PageRequest pageRequest = PageRequest.of(page,size);
+        int pageCnt = memberService.getAdminMemberPage(pageRequest);
+        return ResponseEntity.ok(pageCnt);
+    }
+
+    // admin - 회원조회 - 페이지네이션
+    @GetMapping("/admin/list/page")
+    public ResponseEntity<List<AdminMemberDto>> adminMemberList(@RequestParam (defaultValue = "0") int page,
+                                                                @RequestParam (defaultValue = "10") int size) {
+        List<AdminMemberDto> list = memberService.getAdminMemList(page, size);
+        return ResponseEntity.ok(list);
+    }
+    // admin - 회원정보 삭제
+    @DeleteMapping("/admin/delete/{id}")
+    ResponseEntity<Boolean> deleteMember(@PathVariable Long id){
+        log.info("회원정보 삭제 {}", id);
+        return ResponseEntity.ok(memberService.deleteMember(id));
+    }
+    // admin - 월별 가입자
+    @GetMapping("/admin/monthly")
+    public ResponseEntity<List<Map <String, Object>>> monthlyUserList(){
+        log.info("montly 진입");
+        List<Map <String, Object>> list = memberService.getMonthlySignupCount();
+        return ResponseEntity.ok(list);
+    }
+    // admin - 로그인 타입별 회원 수
+
+
+
 
 }

@@ -116,6 +116,7 @@ public class BoardService {
             return false;
         }
     }
+
     // 게시글 엔티티를 DTO로 변환
     private BoardResDto convertEntityToDto (Board board) {
         BoardResDto boardResDto = new BoardResDto();
