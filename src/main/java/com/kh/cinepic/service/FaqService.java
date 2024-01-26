@@ -57,6 +57,34 @@ public class FaqService {
         }
     }
 
+    // faq 삭제
+
+    public boolean deleteFaq(Long faqId) {
+        try {
+            Faq faq = faqRepository.findById(faqId)
+                    .orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다"));
+
+            faqRepository.delete(faq);
+
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    // DB에서 FAQ 정보 가져오기
+    public List<FaqDto> getFaqList(){
+        List<Faq> faqs = faqRepository.findAll();
+        List<FaqDto> faqDtoList = new ArrayList<>();
+        for (Faq faq: faqs) {
+            FaqDto faqDto = converEntityToDto(faq);
+            faqDtoList.add(faqDto);
+        }
+        return faqDtoList;
+    }
+
 
 
 
