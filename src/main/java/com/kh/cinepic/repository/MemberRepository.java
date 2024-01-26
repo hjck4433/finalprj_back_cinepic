@@ -22,4 +22,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("SELECT MONTH(m.regDate) as month, COUNT(m) as count FROM Member m WHERE YEAR(m.regDate) = YEAR(CURRENT_DATE) GROUP BY MONTH(m.regDate)")
     List<Map<String, Object>> getMonthlySignupCount();
 
+    // 회원가입 타입별 회원수 조회
+    long countByIsKakaoTrue();
+    long countByIsKakaoFalse();
+
+
 }

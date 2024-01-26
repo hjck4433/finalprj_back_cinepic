@@ -11,6 +11,7 @@ import com.kh.cinepic.repository.MemberRepository;
 import com.kh.cinepic.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -197,7 +198,33 @@ public class MemberService {
         }
 
     }
-    // admin - 로그인 타입별 회원 수
+    // admin - 회원가입 타입별 회원 수
+    public List<Map<String, Object>> getMemberTypeCount() {
+        Long kakaoTrue = memberRepository.countByIsKakaoTrue();
+        Long kakaoFalse = memberRepository.countByIsKakaoFalse();
+
+        log.info("kakaoTrue : {}, kakaoFalse : {}", kakaoTrue, kakaoFalse);
+
+        List<Map<String, Object>> memberType = new ArrayList<>();
+        Map<String, Object> noneKakaoData = new HashMap<>();
+        noneKakaoData.put("name", "일반 회원");
+        noneKakaoData.put("value", kakaoFalse);
+
+        Map<String, Object> kakaoData = new HashMap<>();
+        kakaoData.put("name", "카카오 회원");
+        kakaoData.put("value", kakaoTrue);
+
+        memberType.add(noneKakaoData);
+        memberType.add(kakaoData);
+
+        return memberType;
+    }
+
+
+
+
+
+
 
 
 

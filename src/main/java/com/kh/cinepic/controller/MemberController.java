@@ -8,6 +8,7 @@ import com.kh.cinepic.security.SecurityUtil;
 import com.kh.cinepic.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -103,9 +104,12 @@ public class MemberController {
         List<Map <String, Object>> list = memberService.getMonthlySignupCount();
         return ResponseEntity.ok(list);
     }
-    // admin - 로그인 타입별 회원 수
-
-
+    // admin - 회원가입 타입별 회원 수
+    @GetMapping("/admin/counts")
+    public ResponseEntity<List<Map<String, Object>>> getMemberTypeCounts(){
+        List<Map<String, Object>> memberTypeCounts = memberService.getMemberTypeCount();
+        return ResponseEntity.ok(memberTypeCounts);
+    }
 
 
 }
