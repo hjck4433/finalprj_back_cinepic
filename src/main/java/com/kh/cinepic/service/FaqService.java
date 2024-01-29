@@ -79,7 +79,7 @@ public class FaqService {
         List<Faq> faqs = faqRepository.findAll();
         List<FaqDto> faqDtoList = new ArrayList<>();
         for (Faq faq: faqs) {
-            FaqDto faqDto = converEntityToDto(faq);
+            FaqDto faqDto = convertEntityToDto(faq);
             faqDtoList.add(faqDto);
         }
         return faqDtoList;
@@ -90,7 +90,7 @@ public class FaqService {
 
 
     // 엔티티를 Dto로 변환
-    public FaqDto converEntityToDto(Faq faq){
+    public FaqDto convertEntityToDto(Faq faq){
         FaqDto faqDto = new FaqDto();
         faqDto.setFaqId(faq.getFaqId());
         faqDto.setFaqQuestion(faq.getFaqQuestion());
