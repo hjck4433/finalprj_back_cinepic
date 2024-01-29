@@ -68,6 +68,21 @@ public class BoardCommentService {
         }
     }
 
+    // 댓글 삭제
+    public boolean commentDelete(Long id) {
+        try {
+            BoardComment boardComment = boardCommentRepository.findById(id).orElseThrow(
+                    () -> new RuntimeException("해당 댓글이 존재하지 않습니다.")
+            );
+            boardCommentRepository.delete(boardComment);
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     // 댓글 전체 목록 조회
     public List<BoardCommentResDto> getBoardCommentList (Long id) {
         Board board = boardRepository.findById(id)

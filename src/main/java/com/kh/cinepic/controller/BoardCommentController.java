@@ -32,6 +32,13 @@ public class BoardCommentController {
         return ResponseEntity.ok(result);
     }
 
+    // 댓글 삭제
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Boolean> commentDelete(@PathVariable Long id) {
+        boolean result = boardCommentService.commentDelete(id);
+        return ResponseEntity.ok(result);
+    }
+
     //댓글 전체 리스트 조회
     @GetMapping("/{id}")
     public ResponseEntity<List<BoardCommentResDto>> boardCommentList(@PathVariable Long id) {
