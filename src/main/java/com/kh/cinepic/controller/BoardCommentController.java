@@ -21,9 +21,15 @@ public class BoardCommentController {
     // 댓글 저장
     @PostMapping("/new")
     public ResponseEntity<Boolean> saveNewComment(@RequestBody BoardCommentReqDto boardCommentReqDto) {
-        log.info("댓글 저장 진입");
         Long id = SecurityUtil.getCurrentMemberId();
         return ResponseEntity.ok(boardCommentService.saveBoardComment(boardCommentReqDto, id));
+    }
+
+    // 댓글 수정
+    @PostMapping("/modify")
+    public ResponseEntity<Boolean> commentModify(@RequestBody BoardCommentReqDto boardCommentReqDto) {
+        boolean result = boardCommentService.commentModify(boardCommentReqDto);
+        return ResponseEntity.ok(result);
     }
 
     //댓글 전체 리스트 조회

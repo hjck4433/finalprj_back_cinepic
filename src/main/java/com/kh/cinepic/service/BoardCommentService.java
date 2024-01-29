@@ -46,10 +46,32 @@ public class BoardCommentService {
         }
     }
 
+    // 댓글 수정
+    public boolean commentModify (BoardCommentReqDto commentReqDto) {
+        try {
+            BoardComment boardComment = boardCommentRepository.findById(commentReqDto.getId()).orElseThrow(
+                    () -> new RuntimeException("존재하지 않는 댓글입니다.")
+            );
+            String text = "";
+            if (commentReqDto.getCommentText().isEmpty()){
+                text = boardComment.getCommentText();
+            }else {
+                text = commentReqDto.getCommentText();
+            }
+            boardComment.setCommentText(text);
+            boardCommentRepository.save(boardComment);
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     // 댓글 전체 목록 조회
     public List<BoardCommentResDto> getBoardCommentList (Long id) {
         Board board = boardRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("해당 게시글이 존재하지않습니다"));
+                .orElseThrow(()-> new RuntimeException("존재하지 않는 게시글입니다."));
         List<BoardComment> boardComments = boardCommentRepository.findByBoard(board);
         List<BoardCommentResDto> boardCommentResDtos = new ArrayList<>();
         for (BoardComment boardComment : boardComments) {
