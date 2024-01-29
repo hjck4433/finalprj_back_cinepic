@@ -20,15 +20,16 @@ public class FaqController {
 
     @GetMapping("/list")
     public ResponseEntity<List<FaqDto>> getFaqList(){
-        log.info("FAQ 리스트 조회 진입");
+        log.info("faq리스트 조회 진입");
         return ResponseEntity.ok(faqService.getFaqList());
     }
 
     // Faq 추가
     @PostMapping("/new")
     public ResponseEntity<Boolean> createFaq(@RequestBody FaqDto faqDto){
-        log.info("FAQ 저장하기 : {}",faqDto);
-        return ResponseEntity.ok(faqService.createFaq(faqDto));
+        log.info("FAQ 저장하기: {}", faqDto);
+        return ResponseEntity.ok(faqService.createFaq(faqDto)); // 저장된 faq dto 반환
+
     }
 
 
@@ -39,11 +40,11 @@ public class FaqController {
         return ResponseEntity.ok(faqService.reviseFaq(faqDto));
     }
 
+
     // Faq 삭제
     @DeleteMapping("/delete/{faqId}")
-    ResponseEntity<Boolean> deleteFaq(@PathVariable Long faqId){
+    ResponseEntity<Boolean> deleteFaq(@PathVariable Long faqId) {
         log.info("FAQ 삭제하기 {}");
         return ResponseEntity.ok(faqService.deleteFaq(faqId));
     }
-
 }

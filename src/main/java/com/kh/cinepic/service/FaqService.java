@@ -20,16 +20,14 @@ public class FaqService {
 
     // faq 추가
     public boolean createFaq(FaqDto faqDto) {
-
-        // faq 객체 생성
+        // Faq 객체 생성
         Faq faq = new Faq();
-        faq.setFaqQuestion(faqDto.getFaqQuestion());
         faq.setFaqAnswer(faqDto.getFaqAnswer());
-
-        // faq 저장
+        faq.setFaqQuestion(faqDto.getFaqQuestion());
+        // Faq 저장
         Faq saved = faqRepository.save(faq);
+        // 저장된 Faq를 Dto로 변환
 
-        // 저장된 faq를 Dto로 저장
         log.info("savedFaq : {}", faqDto);
         return true;
     }
@@ -39,19 +37,17 @@ public class FaqService {
     public boolean reviseFaq(FaqDto faqDto) {
         try {
             Faq faq = faqRepository.findById(faqDto.getFaqId()).orElseThrow(
-                    () -> new RuntimeException("수정할 게시글이 업습니다")
+                    ()->new RuntimeException("수정할 게시글이 없습니다.")
             );
 
             // 수정할 내용을 설정
             faq.setFaqAnswer(faqDto.getFaqAnswer());
             faq.setFaqQuestion(faqDto.getFaqQuestion());
 
-
-        // 수정된 faq 저장
-        Faq saved = faqRepository.save(faq);
+            // 수정된 Faq 저장
+            Faq saved = faqRepository.save(faq);
             return true;
-
-        }catch (Exception e){
+        }catch(Exception e){
             e.printStackTrace();
             return false;
         }
@@ -59,10 +55,10 @@ public class FaqService {
 
     // faq 삭제
 
-    public boolean deleteFaq(Long faqId) {
+    public boolean deleteFaq(Long faqId){
         try {
             Faq faq = faqRepository.findById(faqId)
-                    .orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다"));
+                    .orElseThrow(()->new RuntimeException("해당 게시글이 존재하지 않습니다"));
 
             faqRepository.delete(faq);
 
@@ -78,7 +74,8 @@ public class FaqService {
     public List<FaqDto> getFaqList(){
         List<Faq> faqs = faqRepository.findAll();
         List<FaqDto> faqDtoList = new ArrayList<>();
-        for (Faq faq: faqs) {
+
+        for (Faq faq : faqs) {
             FaqDto faqDto = convertEntityToDto(faq);
             faqDtoList.add(faqDto);
         }
@@ -88,13 +85,12 @@ public class FaqService {
 
 
 
-
     // 엔티티를 Dto로 변환
     public FaqDto convertEntityToDto(Faq faq){
         FaqDto faqDto = new FaqDto();
         faqDto.setFaqId(faq.getFaqId());
-        faqDto.setFaqQuestion(faq.getFaqQuestion());
         faqDto.setFaqAnswer(faq.getFaqAnswer());
+        faqDto.setFaqQuestion(faq.getFaqQuestion());
         return faqDto;
     }
 }
