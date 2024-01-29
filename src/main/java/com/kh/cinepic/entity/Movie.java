@@ -1,20 +1,19 @@
 package com.kh.cinepic.entity;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "movie")
 @Getter @Setter
+@ToString
 @NoArgsConstructor
 public class Movie {
     @Id
     @Column(name = "movie_id") // 영화 ID
-    private Long movieId;
+    private String movieId;
 
     @Column(name = "movie_title") // 제목
     private String movieTitle;
@@ -46,7 +45,7 @@ public class Movie {
     @Column(name = "movie_director") // 감독
     private String movieDirector;
 
-    @Column(name = "movie_actors") // 출연 배우
+    @Column(name = "movie_actors", columnDefinition = "TEXT") // 출연 배우
     private String movieActors;
 
     @Column(name = "movie_plot", columnDefinition = "TEXT") // 주요 정보
@@ -54,4 +53,22 @@ public class Movie {
 
     @Column(name = "movie_stills", columnDefinition = "TEXT") // 스틸컷
     private String movieStills;
+
+    @Builder
+    public Movie(String movieId, String movieTitle, String moviePoster, String movieTitleEng, String movieRelease, String movieGenre, String movieNation, String movieGrade, String movieRuntime, String movieScore, String movieDirector, String movieActors, String moviePlot, String movieStills) {
+        this.movieId = movieId;
+        this.movieTitle = movieTitle;
+        this.moviePoster = moviePoster;
+        this.movieTitleEng = movieTitleEng;
+        this.movieRelease = movieRelease;
+        this.movieGenre = movieGenre;
+        this.movieNation = movieNation;
+        this.movieGrade = movieGrade;
+        this.movieRuntime = movieRuntime;
+        this.movieScore = movieScore;
+        this.movieDirector = movieDirector;
+        this.movieActors = movieActors;
+        this.moviePlot = moviePlot;
+        this.movieStills = movieStills;
+    }
 }

@@ -28,6 +28,11 @@ public class TheaterService {
 
     @Scheduled(initialDelay = 0, fixedDelay = Long.MAX_VALUE)
     public void theaterScheduler() {
+        if(theaterRepository.count() > 0) {
+            log.info("Theater 테이블이 비어 있지 않습니다. 스케쥴 종료");
+            return;
+        }
+
         Instant startTime = Instant.now();
         log.info("theaterScheduler start!");
         try {
@@ -36,7 +41,7 @@ public class TheaterService {
                 saveTheater(response);
             }
         }catch (Exception e) {
-
+            log.error("영화관 스케쥴 작동 중 오류 :", e);
         }
         Instant endTime = Instant.now();
         log.info("theater schedule end! 걸린 시간 : {}", Duration.between(startTime, endTime));
