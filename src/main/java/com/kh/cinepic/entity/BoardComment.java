@@ -25,8 +25,8 @@ public class BoardComment {
     private Board board;
 
     @Column(name = "comment_content", nullable = false)
-    private String commentContent;
+    private String commentText;
 
     @Column(name = "comment_reg_date")
-    private LocalDateTime commentRegdate;
+    private LocalDateTime commentRegDate;
 }
