@@ -4,8 +4,10 @@ package com.kh.cinepic.controller;
 import com.kh.cinepic.dto.AdminMemberDto;
 import com.kh.cinepic.dto.MemberReqDto;
 import com.kh.cinepic.dto.MemberResDto;
+import com.kh.cinepic.dto.MovieDto;
 import com.kh.cinepic.security.SecurityUtil;
 import com.kh.cinepic.service.MemberService;
+import com.kh.cinepic.service.PreferPythonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final PreferPythonService preferPythonService;
 
     // 회원 상세 조회
     @GetMapping("/detail")
@@ -71,6 +74,15 @@ public class MemberController {
         Long id = SecurityUtil.getCurrentMemberId();
         log.info("id : {}", id);
         return ResponseEntity.ok(memberService.withdrawMember(id));
+    }
+
+    // 회원 맞춤 영화 추천
+    @GetMapping("/recs")
+    public ResponseEntity<List<Map<String, MovieDto>>> getRecsMovies(){
+        Long id = SecurityUtil.getCurrentMemberId();
+        log.info("회원 맞춤 영화 추천 진입 id : {}", id);
+        String genre = "";
+        return ResponseEntity.ok(preferPythonService.getMovieList(id, genre));
     }
 
 
