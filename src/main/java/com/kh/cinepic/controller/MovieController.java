@@ -1,6 +1,7 @@
 package com.kh.cinepic.controller;
 
 import com.kh.cinepic.dto.MovieCommentDto;
+import com.kh.cinepic.dto.MovieDto;
 import com.kh.cinepic.dto.MoviePostDto;
 import com.kh.cinepic.service.MovieCommentService;
 import com.kh.cinepic.service.MoviePostService;
@@ -15,15 +16,19 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping("/movie")
+@RequestMapping("/movies")
 @RequiredArgsConstructor
 public class MovieController {
     private final MovieService movieService;
     private final MoviePostService moviePostService;
     private final MovieCommentService movieCommentService;
 
-    // movie
-
+    // movie - 상세 조회
+    @GetMapping("/detail/{movieId}")
+    public ResponseEntity<MovieDto> getMovieDetail(@PathVariable Long movieId) {
+        MovieDto movieDto = movieService.getMovieDetail(movieId);
+        return ResponseEntity.ok(movieDto);
+    }
 
     // movie_post
     // 포스트 총 페이지 수

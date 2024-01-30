@@ -26,7 +26,7 @@ public class MoviePostCommentController {
         return ResponseEntity.ok(moviePostService.saveMoviePost(moviePostDto, id));
     }
 
-    // 포스트 상세 조회 (test 필요)
+    // 포스트 상세 조회 (영화 불러 오기 되면, test 필요)
     @GetMapping("/post/{id}")
     public ResponseEntity<MoviePostDto> getMoviePost(@PathVariable Long postId) {
         MoviePostDto moviePostDto = moviePostService.getMoviePost(postId);
