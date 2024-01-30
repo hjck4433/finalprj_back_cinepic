@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class Movie {
     @Id
     @Column(name = "movie_id") // 영화 ID
-    private String movieId;
+    private Long movieId;
 
     @Column(name = "movie_title") // 제목
     private String movieTitle;
@@ -55,7 +55,7 @@ public class Movie {
     private String movieStills;
 
     @Builder
-    public Movie(String movieId, String movieTitle, String moviePoster, String movieTitleEng, String movieRelease, String movieGenre, String movieNation, String movieGrade, String movieRuntime, String movieScore, String movieDirector, String movieActors, String moviePlot, String movieStills) {
+    public Movie(Long movieId, String movieTitle, String moviePoster, String movieTitleEng, String movieRelease, String movieGenre, String movieNation, String movieGrade, String movieRuntime, String movieScore, String movieDirector, String movieActors, String moviePlot, String movieStills) {
         this.movieId = movieId;
         this.movieTitle = movieTitle;
         this.moviePoster = moviePoster;

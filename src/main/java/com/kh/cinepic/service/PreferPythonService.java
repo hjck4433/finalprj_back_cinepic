@@ -36,23 +36,23 @@ public class PreferPythonService {
         // 회원 취향
         if(id != null) {
             UserPreferDto preferDto = userPreference(id);
-            Map<String, String> recsMovies = movieRecsList(preferDto);
+            Map<String, Long> recsMovies = movieRecsList(preferDto);
 
         }else {
             UserPreferDto preferDto = genrePrefer(genre);
-            Map<String, String> recsMovies = movieRecsList(preferDto);
+            Map<String, Long> recsMovies = movieRecsList(preferDto);
         }
 
         return movieList;
 
     }
 
-    public List<Map<String, MovieDto>> findMovieList(Map<String, String> recsMovies) {
+    public List<Map<String, MovieDto>> findMovieList(Map<String, Long> recsMovies) {
         List<Map<String, MovieDto>> movieList = new ArrayList<>();
 
-        for(Map.Entry<String, String> entry : recsMovies.entrySet()) {
+        for(Map.Entry<String, Long> entry : recsMovies.entrySet()) {
             String key = entry.getKey();
-            String movieId = entry.getValue();
+            Long movieId = entry.getValue();
 
             Movie movie = movieRepository.findById(movieId)
                     .orElseThrow(() -> new RuntimeException("해당 영화가 없습니다."));
@@ -64,8 +64,8 @@ public class PreferPythonService {
     }
 
 
-    public Map<String, String> movieRecsList(UserPreferDto preferDto) {
-        Map<String, String> recsMovies = new HashMap<>();
+    public Map<String, Long> movieRecsList(UserPreferDto preferDto) {
+        Map<String, Long> recsMovies = new HashMap<>();
         log.info("파이썬을 통해 영화추천 받으러 가는 중");
         RestTemplate restTemplate = new RestTemplate();
         String apiUrl = "http://localhost:5000/api/recommendation";

@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class MovieDto {
-    private String movieId;
+    private Long movieId;
     private String movieTitle;
     private String moviePoster;
     private String movieTitleEng;
