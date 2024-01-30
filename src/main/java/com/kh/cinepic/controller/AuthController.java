@@ -71,6 +71,7 @@ public class AuthController {
         return ResponseEntity.ok(faqService.getFaqList());
     }
 
+    // 비회원 영화 추천
     @GetMapping("/recs/{genre}")
     public ResponseEntity<List<Map<String, MovieDto>>> getRecsMovies(@PathVariable String genre) {
         Long id = null;

@@ -34,6 +34,7 @@ public class PreferPythonService {
     private final BookmarkRepository bookmarkRepository;
     private final MovieRepository movieRepository;
 
+    // 회원 / 비회원 여부에 따라 영화 추천 다르게 요청
     public List<Map<String, MovieDto>> getMovieList(Long id, String genre) {
         List<Map<String, MovieDto>> movieList = new ArrayList<>();
 
@@ -52,6 +53,7 @@ public class PreferPythonService {
 
     }
 
+    // 리스트에 추천 영화 담기
     public List<Map<String, MovieDto>> findMovieList(Map<String, Integer> recsMovies) {
         List<Map<String, MovieDto>> movieList = new ArrayList<>();
 
@@ -74,6 +76,7 @@ public class PreferPythonService {
     }
 
 
+    // 파이썬에 영화 추천 리스트 요청
     public Map<String, Integer> movieRecsList(UserPreferDto preferDto) {
         log.info("파이썬을 통해 영화추천 받으러 가는 중");
         RestTemplate restTemplate = new RestTemplate();
@@ -126,6 +129,7 @@ public class PreferPythonService {
         return preferDto;
     }
 
+    // Movie Entity MovieDto 변환
     public MovieDto convertEntityToDto (Movie movie) {
         MovieDto movieDto = new MovieDto();
 
