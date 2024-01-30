@@ -4,6 +4,7 @@ import com.kh.cinepic.dto.*;
 import com.kh.cinepic.service.AuthService;
 import com.kh.cinepic.service.FaqService;
 import com.kh.cinepic.service.MemberService;
+import com.kh.cinepic.service.PreferPythonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class AuthController {
     private final AuthService authService;
     private final MemberService memberService;
     private final FaqService faqService;
+    private final PreferPythonService preferPythonService;
 
     //중복체크
     @PostMapping("/isunique")
@@ -69,5 +71,12 @@ public class AuthController {
         return ResponseEntity.ok(faqService.getFaqList());
     }
 
+    @GetMapping("/recs/{genre}")
+    public ResponseEntity<List<Map<String, MovieDto>>> getRecsMovies(@PathVariable String genre) {
+        Long id = null;
+        log.info("추천 장르 : {}", genre);
+
+        return ResponseEntity.ok(preferPythonService.getMovieList(id, genre));
+    }
 
 }
