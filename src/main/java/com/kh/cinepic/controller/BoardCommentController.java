@@ -6,6 +6,7 @@ import com.kh.cinepic.security.SecurityUtil;
 import com.kh.cinepic.service.BoardCommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,10 +40,29 @@ public class BoardCommentController {
         return ResponseEntity.ok(result);
     }
 
-    //댓글 전체 리스트 조회
+    // 댓글 리스트
     @GetMapping("/{id}")
     public ResponseEntity<List<BoardCommentResDto>> boardCommentList(@PathVariable Long id) {
         List<BoardCommentResDto> list = boardCommentService.getBoardCommentList(id);
+        return ResponseEntity.ok(list);
+    }
+
+    // 댓글 총 페이지 수
+    @GetMapping("/page/{boardId}")
+    public ResponseEntity<Integer> commentPageCount(@PathVariable Long boardId,
+                                                    @RequestParam(defaultValue = "0") int page,
+                                                    @RequestParam(defaultValue = "5") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        int pageCnt = boardCommentService.getBoardCommentPage(pageRequest, boardId);
+        return ResponseEntity.ok(pageCnt);
+    }
+
+    // 댓글 페이지네이션
+    @GetMapping("/page/list/{boardId}")
+    public ResponseEntity<List<BoardCommentResDto>> commentPageList(@PathVariable Long boardId,
+                                                               @RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "5") int size) {
+        List<BoardCommentResDto> list = boardCommentService.getCommentPageList(page, size, boardId);
         return ResponseEntity.ok(list);
     }
 }

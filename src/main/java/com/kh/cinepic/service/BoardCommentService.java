@@ -8,6 +8,10 @@ import com.kh.cinepic.repository.BoardRepository;
 import com.kh.cinepic.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -83,13 +87,37 @@ public class BoardCommentService {
         }
     }
 
-    // 댓글 전체 목록 조회
+    // 댓글 리스트
     public List<BoardCommentResDto> getBoardCommentList (Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(()-> new RuntimeException("존재하지 않는 게시글입니다."));
         List<BoardComment> boardComments = boardCommentRepository.findByBoard(board);
         List<BoardCommentResDto> boardCommentResDtos = new ArrayList<>();
         for (BoardComment boardComment : boardComments) {
+            boardCommentResDtos.add(convertEntityToDto(boardComment));
+        }
+        return boardCommentResDtos;
+    }
+
+    // 댓글 페이지 수
+    public int getBoardCommentPage(Pageable pageable, Long boardId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(
+                () -> new RuntimeException("해당하는 id 값이 없습니다. " + boardId)
+        );
+        Page<BoardComment> commentPage = boardCommentRepository.findByBoard(board, pageable);
+        return commentPage.getTotalPages();
+    }
+
+    // 댓글 페이지네이션
+    public List<BoardCommentResDto> getCommentPageList(int page, int size, Long boardId) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("commentRegDate")));
+
+        Board board = boardRepository.findById(boardId).orElseThrow(
+                () -> new RuntimeException("해당하는 id 값이 없습니다. " + boardId)
+        );
+        List<BoardComment> boardComments = boardCommentRepository.findByBoard(board, pageable).getContent();
+        List<BoardCommentResDto> boardCommentResDtos = new ArrayList<>();
+        for(BoardComment boardComment : boardComments) {
             boardCommentResDtos.add(convertEntityToDto(boardComment));
         }
         return boardCommentResDtos;
