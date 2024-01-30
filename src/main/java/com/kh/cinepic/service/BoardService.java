@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -143,10 +144,25 @@ public class BoardService {
         for (Board board : boards){
             boardList.add(convertEntityToDto(board));
         }
+
         return boardList;
     }
 
     // 총 페이지 조회
     public int getAdminBoardPage(Pageable pageable){return boardRepository.findAll(pageable).getTotalPages();}
+
+
+
+    // categoryName 별 게시글 수 조회
+    public Map<String, Long> getBoardCountByCategoryName(){
+        return boardRepository.countByCategoryName();
+    }
+
+    // gatherType 별 게시글 수 조회
+    public Map<String, Long> getBoardCountByGatherType(){
+        return boardRepository.countGatherType();
+    }
+
+
 
 }

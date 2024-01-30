@@ -46,7 +46,7 @@ public class Board {
     private String image;
 
     // 조회수
-//    private int count;
+    private int count;
 
     // 게시글의 댓글
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)

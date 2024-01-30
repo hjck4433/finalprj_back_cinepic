@@ -10,7 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -61,6 +63,7 @@ public class BoardController {
     @GetMapping("/admin/boardlist")
     public ResponseEntity<List<BoardResDto>> adminBoardList(@RequestParam (defaultValue = "0")int page,
                                                             @RequestParam(defaultValue = "10")int size){
+        log.info("어드민 게시글 리스트 진입");
         return ResponseEntity.ok(boardService.getAdminBoardList(page, size));
     }
 
@@ -70,9 +73,19 @@ public class BoardController {
     public ResponseEntity<Integer> adminBoardPages(@RequestParam(defaultValue = "0")int page,
                                                    @RequestParam(defaultValue = "10")int size){
         PageRequest pageRequest = PageRequest.of(page, size);
+        log.info("total page : {}", boardService.getAdminBoardPage(pageRequest));
         return ResponseEntity.ok(boardService.getAdminBoardPage(pageRequest));
     }
 
+    // 모든 카테고리 게시글 수 조회
+    @GetMapping("/admin/boardtype")
+    public ResponseEntity<Map<String, Long>> countByBoardType(){
+        Map<String, Long> result = new HashMap<>();
+        // categoryName 별 게시글 수 조회
+        result.putAll(boardService.getBoardCountByCategoryName());
+        // gatherType 별 게시글 수 조회
+        result.putAll(boardService.getBoardCountByGatherType());
 
-
+        return ResponseEntity.ok(result);
+    }
 }
