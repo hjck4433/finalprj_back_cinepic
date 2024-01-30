@@ -2,15 +2,14 @@ package com.kh.cinepic.controller;
 
 import com.kh.cinepic.dto.*;
 import com.kh.cinepic.service.AuthService;
+import com.kh.cinepic.service.FaqService;
 import com.kh.cinepic.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -20,6 +19,7 @@ import java.util.Map;
 public class AuthController {
     private final AuthService authService;
     private final MemberService memberService;
+    private final FaqService faqService;
 
     //중복체크
     @PostMapping("/isunique")
@@ -60,6 +60,13 @@ public class AuthController {
     public ResponseEntity<AccessTokenDto> newToken(@RequestBody String refreshToken){
         log.info("refreshToken : {}", refreshToken);
         return ResponseEntity.ok(authService.refreshAccessToken(refreshToken));
+    }
+
+
+    @GetMapping("/faqlist")
+    public ResponseEntity<List<FaqDto>> getFaqList(){
+        log.info("메인페이지에서 faqlist요청");
+        return ResponseEntity.ok(faqService.getFaqList());
     }
 
 
