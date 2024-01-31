@@ -8,11 +8,13 @@ import com.kh.cinepic.repository.BoardRepository;
 import com.kh.cinepic.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,10 +26,12 @@ import java.util.List;
 public class BoardCommentService {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
+    @Autowired
     private BoardCommentRepository boardCommentRepository;
 
 
     // 댓글 등록
+    @Transactional
     public boolean saveBoardComment (BoardCommentReqDto boardCommentReqDto, Long id) {
         try {
             BoardComment boardComment = new BoardComment();
