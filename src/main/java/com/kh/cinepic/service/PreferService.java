@@ -75,4 +75,19 @@ public class PreferService {
              return false;
          }
     }
+
+    // 취향 여부
+    public boolean isPrefer(Long id) {
+        try {
+            Member member = memberRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("해당 회원이 존재 하지 않습니다."));
+
+            return preferRepository.existsByMember(member);
+
+        } catch (Exception e) {
+            log.error("취향 등록 여부 확인 중 에러 : ", e);
+            return false;
+        }
+
+    }
 }

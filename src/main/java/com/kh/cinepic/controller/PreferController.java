@@ -46,4 +46,12 @@ public class PreferController {
         Long id = SecurityUtil.getCurrentMemberId();
         return ResponseEntity.ok(preferPythonService.savePreferMovie(id));
     }
+
+    // 취향정보 여부
+    @GetMapping("/isprefer")
+    public ResponseEntity<Boolean> getIsPrefer() {
+        Long id = SecurityUtil.getCurrentMemberId();
+        return ResponseEntity.ok(preferService.isPrefer(id));
+    }
+
 }
