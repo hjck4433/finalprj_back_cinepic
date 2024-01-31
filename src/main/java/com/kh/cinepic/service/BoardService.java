@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -153,16 +154,30 @@ public class BoardService {
 
 
 
-    // categoryName 별 게시글 수 조회
-    public Map<String, Long> getBoardCountByCategoryName(){
-        return boardRepository.countByCategoryName();
+    // 모든 카테고리 게시글 수 조회
+
+    // 카테고리별, gatherType별 게시글 수 조회
+    public Map<String, Long> getCountCategoryAndType() {
+        Map<String, Long> countMap = new HashMap<>();
+
+        try {
+            // 카테고리 이름을 기준으로 게시글 수를 가져오기
+            List<Category> categories = categoryRepository.findAll();
+            for (Category category : categories) {
+                long countByCategory = boardRepository.countByCategory(category);
+                countMap.put(category.getCategoryName(), countByCategory);
+            }
+
+            // gatherType(온라인, 오프라인)은 씨네크루의 정보만 가져오기
+            long countOnline = boardRepository.countByCategory_CategoryNameAndGatherType("씨네크루", "온라인");
+            long countOffline = boardRepository.countByCategory_CategoryNameAndGatherType("씨네크루", "오프라인");
+
+            countMap.put("온라인", countOnline);
+            countMap.put("오프라인", countOffline);
+        }catch (Exception e) {
+            log.error("게시글 수 조회 중 오류 발생: {}", e.getMessage());
+        }
+        return countMap;
     }
-
-    // gatherType 별 게시글 수 조회
-    public Map<String, Long> getBoardCountByGatherType(){
-        return boardRepository.countGatherType();
-    }
-
-
-
 }
+

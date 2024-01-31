@@ -79,13 +79,8 @@ public class BoardController {
 
     // 모든 카테고리 게시글 수 조회
     @GetMapping("/admin/boardtype")
-    public ResponseEntity<Map<String, Long>> countByBoardType(){
-        Map<String, Long> result = new HashMap<>();
-        // categoryName 별 게시글 수 조회
-        result.putAll(boardService.getBoardCountByCategoryName());
-        // gatherType 별 게시글 수 조회
-        result.putAll(boardService.getBoardCountByGatherType());
-
+    public ResponseEntity<Map<String, Long>> getCountCategoryAndType() {
+        Map<String, Long> result = boardService.getCountCategoryAndType();
         return ResponseEntity.ok(result);
     }
 }

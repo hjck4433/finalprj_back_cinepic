@@ -205,27 +205,26 @@ public class MemberService {
 
         log.info("kakaoTrue : {}, kakaoFalse : {}", kakaoTrue, kakaoFalse);
 
+
+        // 회원 유형 데이터를 저장할 리스트
         List<Map<String, Object>> memberType = new ArrayList<>();
+
+        // 일반회원 데이터
         Map<String, Object> noneKakaoData = new HashMap<>();
         noneKakaoData.put("name", "일반 회원");
         noneKakaoData.put("value", kakaoFalse);
 
+        //카카오 회원 데이터
         Map<String, Object> kakaoData = new HashMap<>();
         kakaoData.put("name", "카카오 회원");
         kakaoData.put("value", kakaoTrue);
 
+        //일반회원, 카카오 회원 데이터
         memberType.add(noneKakaoData);
         memberType.add(kakaoData);
 
         return memberType;
     }
-
-
-
-
-
-
-
 
 
 
