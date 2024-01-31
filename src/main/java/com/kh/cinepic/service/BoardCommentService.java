@@ -99,30 +99,6 @@ public class BoardCommentService {
         return boardCommentResDtos;
     }
 
-    // 댓글 페이지 수
-    public int getBoardCommentPage(Pageable pageable, Long boardId) {
-        Board board = boardRepository.findById(boardId).orElseThrow(
-                () -> new RuntimeException("해당하는 id 값이 없습니다. " + boardId)
-        );
-        Page<BoardComment> commentPage = boardCommentRepository.findByBoard(board, pageable);
-        return commentPage.getTotalPages();
-    }
-
-    // 댓글 페이지네이션
-    public List<BoardCommentResDto> getCommentPageList(int page, int size, Long boardId) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("commentRegDate")));
-
-        Board board = boardRepository.findById(boardId).orElseThrow(
-                () -> new RuntimeException("해당하는 id 값이 없습니다. " + boardId)
-        );
-        List<BoardComment> boardComments = boardCommentRepository.findByBoard(board, pageable).getContent();
-        List<BoardCommentResDto> boardCommentResDtos = new ArrayList<>();
-        for(BoardComment boardComment : boardComments) {
-            boardCommentResDtos.add(convertEntityToDto(boardComment));
-        }
-        return boardCommentResDtos;
-    }
-
     // 댓글 엔티티를 Dto로 변환
     public BoardCommentResDto convertEntityToDto (BoardComment boardComment) {
         BoardCommentResDto boardCommentResDto = new BoardCommentResDto();

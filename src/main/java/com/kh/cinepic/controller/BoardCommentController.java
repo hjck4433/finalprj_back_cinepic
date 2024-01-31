@@ -47,22 +47,4 @@ public class BoardCommentController {
         return ResponseEntity.ok(list);
     }
 
-    // 댓글 총 페이지 수
-    @GetMapping("/page/{boardId}")
-    public ResponseEntity<Integer> commentPageCount(@PathVariable Long boardId,
-                                                    @RequestParam(defaultValue = "0") int page,
-                                                    @RequestParam(defaultValue = "5") int size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        int pageCnt = boardCommentService.getBoardCommentPage(pageRequest, boardId);
-        return ResponseEntity.ok(pageCnt);
-    }
-
-    // 댓글 페이지네이션
-    @GetMapping("/page/list/{boardId}")
-    public ResponseEntity<List<BoardCommentResDto>> commentPageList(@PathVariable Long boardId,
-                                                               @RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "5") int size) {
-        List<BoardCommentResDto> list = boardCommentService.getCommentPageList(page, size, boardId);
-        return ResponseEntity.ok(list);
-    }
 }
