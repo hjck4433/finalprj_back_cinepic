@@ -5,10 +5,8 @@ import com.kh.cinepic.dto.UserPreferDto;
 import com.kh.cinepic.entity.Member;
 import com.kh.cinepic.entity.Movie;
 import com.kh.cinepic.entity.Prefer;
-import com.kh.cinepic.repository.BookmarkRepository;
-import com.kh.cinepic.repository.MemberRepository;
-import com.kh.cinepic.repository.MovieRepository;
-import com.kh.cinepic.repository.PreferRepository;
+import com.kh.cinepic.entity.PreferMovie;
+import com.kh.cinepic.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -33,27 +31,20 @@ public class PreferPythonService {
     private final MemberRepository memberRepository;
     private final BookmarkRepository bookmarkRepository;
     private final MovieRepository movieRepository;
+    private final PreferMovieRepository preferMovieRepository;
 
     // 회원 / 비회원 여부에 따라 영화 추천 다르게 요청
-    public List<Map<String, MovieDto>> getMovieList(Long id, String genre) {
+    public List<Map<String, MovieDto>> getMovieList(String genre) {
         List<Map<String, MovieDto>> movieList = new ArrayList<>();
 
-        // 회원 취향
-        if(id != null) {
-            UserPreferDto preferDto = userPreference(id);
-            Map<String, Integer> recsMovies = movieRecsList(preferDto);
-            movieList = findMovieList(recsMovies);
-        }else {
-            UserPreferDto preferDto = genrePrefer(genre);
-            Map<String, Integer> recsMovies = movieRecsList(preferDto);
-            movieList = findMovieList(recsMovies);
-        }
+        UserPreferDto preferDto = genrePrefer(genre);
+        Map<String, Integer> recsMovies = movieRecsList(preferDto);
+        movieList = findMovieList(recsMovies);
 
         return movieList;
-
     }
 
-    // 리스트에 추천 영화 담기
+    // 리스트에 추천 영화 담기 (비회원)
     public List<Map<String, MovieDto>> findMovieList(Map<String, Integer> recsMovies) {
         List<Map<String, MovieDto>> movieList = new ArrayList<>();
 
@@ -73,6 +64,106 @@ public class PreferPythonService {
         }
 
         return movieList;
+    }
+
+    // 회원 추천 영화
+    public List<Map<String, MovieDto>> getPreferMovie(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("해당 회원이 존재 하지 않습니다."));
+
+        PreferMovie preferMovie = preferMovieRepository.findByMember(member)
+                .orElseThrow(() -> new RuntimeException("해당 회원의 취향 정보가 없습니다."));
+
+        List<Map<String, MovieDto>> movieList = new ArrayList<>();
+
+        // recs1
+        Movie recs1 = preferMovie.getRecs1();
+        if (recs1 != null) {
+            Map<String, MovieDto> recs1Map = new HashMap<>();
+            recs1Map.put("recs1", convertEntityToDto(recs1));
+            movieList.add(recs1Map);
+        }
+
+        // recs2
+        Movie recs2 = preferMovie.getRecs2();
+        if (recs2 != null) {
+            Map<String, MovieDto> recs2Map = new HashMap<>();
+            recs2Map.put("recs2", convertEntityToDto(recs2));
+            movieList.add(recs2Map);
+        }
+
+        // recs3
+        Movie recs3 = preferMovie.getRecs3();
+        if (recs3 != null) {
+            Map<String, MovieDto> recs3Map = new HashMap<>();
+            recs3Map.put("recs3", convertEntityToDto(recs3));
+            movieList.add(recs3Map);
+        }
+
+        // recs4
+        Movie recs4 = preferMovie.getRecs4();
+        if (recs4 != null) {
+            Map<String, MovieDto> recs4Map = new HashMap<>();
+            recs4Map.put("recs4", convertEntityToDto(recs4));
+            movieList.add(recs4Map);
+        }
+
+        return movieList;
+
+    }
+
+    // 회원별 추천 영화리스트 DB 저장
+    public boolean savePreferMovie(Long id) {
+        try {
+            Member member = memberRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다."));
+
+            UserPreferDto preferDto = userPreference(id);
+            Map<String, Integer> recsMovies = movieRecsList(preferDto);
+
+            PreferMovie preferMovie;
+
+            if(preferMovieRepository.existsByMember(member)) {
+                preferMovie = preferMovieRepository.findByMember(member)
+                        .orElseThrow(() -> new RuntimeException("해당 회원의 취향 정보가 없습니다."));
+            }else {
+                preferMovie = new PreferMovie();
+                preferMovie.setMember(member);
+            }
+
+            for(Map.Entry<String, Integer> entry : recsMovies.entrySet()) {
+                String key = entry.getKey();
+                Long movieId = entry.getValue().longValue();
+
+                Movie movie = movieRepository.findById(movieId)
+                        .orElseThrow(() -> new RuntimeException("해당 영화가 없습니다."));
+
+                switch (key) {
+                    case "recs1":
+                        preferMovie.setRecs1(movie);
+                        break;
+                    case "recs2":
+                        preferMovie.setRecs2(movie);
+                        break;
+                    case "recs3":
+                        preferMovie.setRecs3(movie);
+                        break;
+                    case "recs4":
+                        preferMovie.setRecs4(movie);
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+
+            preferMovieRepository.save(preferMovie);
+
+            return true;
+        }catch (Exception e) {
+            log.error("추천영화 저장 중 오류 :",e);
+            return false;
+        }
     }
 
 

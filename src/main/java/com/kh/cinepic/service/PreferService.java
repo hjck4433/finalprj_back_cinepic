@@ -1,5 +1,6 @@
 package com.kh.cinepic.service;
 
+
 import com.kh.cinepic.dto.PreferDto;
 import com.kh.cinepic.entity.Member;
 import com.kh.cinepic.entity.Prefer;
@@ -17,12 +18,6 @@ import org.springframework.stereotype.Service;
 public class PreferService {
     private final PreferRepository preferRepository;
     private final MemberRepository memberRepository;
-
-    // 감독 존재 여부
-
-
-    // 배우 존재 여부
-
 
     // 취향 등록
     public boolean savePrefer(PreferDto preferDto, Long id) {

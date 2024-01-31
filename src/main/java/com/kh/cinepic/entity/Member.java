@@ -61,6 +61,8 @@ public class Member {
     private RefreshToken refreshToken;
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private Prefer prefer;
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private PreferMovie preferMovie;
 
 
 

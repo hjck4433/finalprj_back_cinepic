@@ -81,8 +81,8 @@ public class MemberController {
     public ResponseEntity<List<Map<String, MovieDto>>> getRecsMovies(){
         Long id = SecurityUtil.getCurrentMemberId();
         log.info("회원 맞춤 영화 추천 진입 id : {}", id);
-        String genre = "";
-        return ResponseEntity.ok(preferPythonService.getMovieList(id, genre));
+
+        return ResponseEntity.ok(preferPythonService.getPreferMovie(id));
     }
 
 

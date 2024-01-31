@@ -74,10 +74,9 @@ public class AuthController {
     // 비회원 영화 추천
     @GetMapping("/recs/{genre}")
     public ResponseEntity<List<Map<String, MovieDto>>> getRecsMovies(@PathVariable String genre) {
-        Long id = null;
         log.info("추천 장르 : {}", genre);
 
-        return ResponseEntity.ok(preferPythonService.getMovieList(id, genre));
+        return ResponseEntity.ok(preferPythonService.getMovieList(genre));
     }
 
 }

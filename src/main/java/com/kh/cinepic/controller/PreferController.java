@@ -4,6 +4,7 @@ package com.kh.cinepic.controller;
 import com.kh.cinepic.dto.PreferDto;
 import com.kh.cinepic.security.SecurityUtil;
 
+import com.kh.cinepic.service.PreferPythonService;
 import com.kh.cinepic.service.PreferService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PreferController {
     private final PreferService preferService;
-
-
-    // 감독 존재 여부
-
-    // 배우 존재 여부
+    private final PreferPythonService preferPythonService;
 
     // 취향 등록
     @PostMapping("/new")
@@ -41,5 +38,12 @@ public class PreferController {
     public ResponseEntity<Boolean> modifyPrefer(@RequestBody PreferDto preferDto) {
         boolean isModified = preferService.modifyPrefer(preferDto);
         return ResponseEntity.ok(isModified);
+    }
+
+    // 취향정보로 추천영화 저장
+    @GetMapping("/savemovie")
+    public ResponseEntity<Boolean> saveRecsMovie() {
+        Long id = SecurityUtil.getCurrentMemberId();
+        return ResponseEntity.ok(preferPythonService.savePreferMovie(id));
     }
 }
