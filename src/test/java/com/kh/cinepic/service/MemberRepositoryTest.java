@@ -49,4 +49,40 @@ public class MemberRepositoryTest {
         em.clear();
         System.out.println("testMember 결과 : " + testMember);
     }
+
+    @Test
+    @DisplayName("이메일 중복체크 테스트")
+    public void isUniqeEmailTest(){
+        Member member = createMemberInfo();
+        memberRepository.save(member);
+        boolean isUnique = memberRepository.existsByEmail("test0@gmail.com");
+
+        em.flush();
+        em.clear();
+        System.out.println("isUnique 결과 : " +isUnique);
+    }
+
+    @Test
+    @DisplayName("닉네임 중복 테스트")
+    public void isUniqueAliasTest() {
+        Member member = createMemberInfo();
+        memberRepository.save(member);
+        boolean isAliasUnique = memberRepository.existsByAlias("다람쥐");
+
+        em.flush();
+        em.clear();
+        System.out.println("isAliasUnique결과 : " + isAliasUnique);
+    }
+
+    @Test
+    @DisplayName("전화번호 중복 테스트")
+    public void isUniquePhoneTest(){
+        Member member = createMemberInfo();
+        memberRepository.save(member);
+        boolean isPhoneUnique = memberRepository.existsByPhone("010-1111-2222");
+
+        em.flush();
+        em.clear();
+        System.out.println("isPhoneUnique 결과 : " + isPhoneUnique);
+    }
 }
