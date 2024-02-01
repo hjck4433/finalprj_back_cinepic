@@ -85,4 +85,31 @@ public class MemberRepositoryTest {
         em.clear();
         System.out.println("isPhoneUnique 결과 : " + isPhoneUnique);
     }
+
+    @Test
+    @DisplayName("이메일과 비밀번호로 회원 찾기 테스트")
+    public void findMemberByEmailAndPasswordTest() {
+        Member member = createMemberInfo();
+        memberRepository.save(member);
+
+        Member foundMember = memberRepository.findByEmailAndPassword("test@gmail.com", "test1234!").orElseThrow();
+
+        em.flush();
+        em.clear();
+
+        System.out.println("찾은 회원 : " + foundMember);
+    }
+
+
+    @Test
+    @DisplayName("멤버십 여부 테스트")
+    public void isMembershipTest() {
+        Member member = createMemberInfo();
+        memberRepository.save(member);
+        boolean isMembership = memberRepository.existsById(member.getId());
+
+        em.flush();
+        em.clear();
+        System.out.println("isMembership 결과 : " + isMembership);
+    }
 }
