@@ -12,4 +12,5 @@ import java.util.List;
 @Repository
 public interface BoardCommentRepository extends JpaRepository<BoardComment, Long> {
     List<BoardComment> findByBoard(Board board);
+    Page<BoardComment> findByBoard(Board board, Pageable pageable);
 }
