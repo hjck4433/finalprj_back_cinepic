@@ -51,7 +51,7 @@ public class BoardCommentController {
     @GetMapping("/page/{boardId}")
     public ResponseEntity<Integer> totalBoardCommentPage(@PathVariable Long boardId,
                                                          @RequestParam(defaultValue = "0") int page,
-                                                         @RequestParam(defaultValue = "3") int size) {
+                                                         @RequestParam(defaultValue = "5") int size) {
 
         PageRequest pageRequest = PageRequest.of(page, size);
         int totalPage = boardCommentService.getTotalBoardCommentPage(pageRequest, boardId);
@@ -62,7 +62,7 @@ public class BoardCommentController {
     @GetMapping("/page/list/{boardId}")
     public ResponseEntity<List<BoardCommentResDto>> boardCommentPageList(@PathVariable Long boardId,
                                                                          @RequestParam(defaultValue = "0") int page,
-                                                                         @RequestParam(defaultValue = "3") int size) {
+                                                                         @RequestParam(defaultValue = "5") int size) {
 
         List<BoardCommentResDto> list = boardCommentService.getBoardCommentPageList(page, size, boardId);
         return ResponseEntity.ok(list);
