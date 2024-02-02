@@ -1,7 +1,9 @@
 package com.kh.cinepic.controller;
 
 import com.kh.cinepic.dto.MovieCommentDto;
+import com.kh.cinepic.dto.MovieCommentReqDto;
 import com.kh.cinepic.dto.MoviePostDto;
+import com.kh.cinepic.dto.MoviePostReqDto;
 import com.kh.cinepic.security.SecurityUtil;
 import com.kh.cinepic.service.MovieCommentService;
 import com.kh.cinepic.service.MoviePostService;
@@ -21,9 +23,9 @@ public class MoviePostCommentController {
     // movie_post
     // 포스트 저장
     @PostMapping("/post/new")
-    public ResponseEntity<Boolean> saveMoviePost(@RequestBody MoviePostDto moviePostDto) {
+    public ResponseEntity<Boolean> saveMoviePost(@RequestBody MoviePostReqDto moviePostReqDto) {
         Long id = SecurityUtil.getCurrentMemberId();
-        return ResponseEntity.ok(moviePostService.saveMoviePost(moviePostDto, id));
+        return ResponseEntity.ok(moviePostService.saveMoviePost(moviePostReqDto, id));
     }
 
     // 포스트 상세 조회 (영화 불러 오기 되면, test 필요)
@@ -50,10 +52,10 @@ public class MoviePostCommentController {
     // movie_comment
     // 관람평 저장
     @PostMapping("/comment/new")
-    public ResponseEntity<Boolean> saveMovieComment(@RequestBody MovieCommentDto movieCommentDto) {
-        log.info("댓글 저장 진입");
+    public ResponseEntity<Boolean> saveMovieComment(@RequestBody MovieCommentReqDto movieCommentReqDto) {
+        log.info("back - 댓글 저장 진입");
         Long id = SecurityUtil.getCurrentMemberId();
-        return ResponseEntity.ok(movieCommentService.saveMovieComment(movieCommentDto, id));
+        return ResponseEntity.ok(movieCommentService.saveMovieComment(movieCommentReqDto, id));
     }
 
     // 관람평 수정

@@ -1,6 +1,7 @@
 package com.kh.cinepic.service;
 
 import com.kh.cinepic.dto.MoviePostDto;
+import com.kh.cinepic.dto.MoviePostReqDto;
 import com.kh.cinepic.entity.Member;
 import com.kh.cinepic.entity.Movie;
 import com.kh.cinepic.entity.MoviePost;
@@ -27,21 +28,20 @@ public class MoviePostService {
     private final MoviePostRepository moviePostRepository;
 
     // 영화 포스트 등록
-    public boolean saveMoviePost(MoviePostDto moviePostDto, Long id) {
+    public boolean saveMoviePost(MoviePostReqDto moviePostReqDto, Long id) {
         try {
             MoviePost moviePost = new MoviePost();
             Member member = memberRepository.findById(id).orElseThrow(
                     () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
             );
-            Movie movie = movieRepository.findById(moviePostDto.getMovieId()).orElseThrow(
+            Movie movie = movieRepository.findById(moviePostReqDto.getMovieId()).orElseThrow(
                     () -> new RuntimeException("해당 영화가 존재하지 않습니다.")
             );
             moviePost.setMember(member);
             moviePost.setMovie(movie);
-            moviePost.setPostImage(moviePostDto.getPostImage());
-            moviePost.setPostTitle(moviePost.getPostTitle());
-            moviePost.setPostContent(moviePost.getPostContent());
-            moviePost.setPostRegDate(moviePostDto.getPostRegDate());
+            moviePost.setPostImage(moviePostReqDto.getPostImage());
+            moviePost.setPostTitle(moviePostReqDto.getPostTitle());
+            moviePost.setPostContent(moviePostReqDto.getPostContent());
 
             moviePostRepository.save(moviePost);
             return true;

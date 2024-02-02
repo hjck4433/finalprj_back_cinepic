@@ -1,6 +1,7 @@
 package com.kh.cinepic.service;
 
 import com.kh.cinepic.dto.MovieCommentDto;
+import com.kh.cinepic.dto.MovieCommentReqDto;
 import com.kh.cinepic.entity.Member;
 import com.kh.cinepic.entity.Movie;
 import com.kh.cinepic.entity.MovieComment;
@@ -28,20 +29,20 @@ public class MovieCommentService {
     private final MovieCommentRepository movieCommentRepository;
 
     // 관람평 등록
-    public boolean saveMovieComment(MovieCommentDto movieCommentDto, Long id) {
+    public boolean saveMovieComment(MovieCommentReqDto movieCommentReqDto, Long id) {
         try {
             MovieComment movieComment = new MovieComment();
             Member member = memberRepository.findById(id).orElseThrow(
                     () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
             );
-            Movie movie = movieRepository.findById(movieCommentDto.getMovieId()).orElseThrow(
+            Movie movie = movieRepository.findById(movieCommentReqDto.getMovieId()).orElseThrow(
                     () -> new RuntimeException("해당 영화가 존재하지 않습니다.")
             );
             movieComment.setMember(member);
             movieComment.setMovie(movie);
-            movieComment.setRatingField(movieCommentDto.getRatingField());
-            movieComment.setRatingNum(movieCommentDto.getRatingNum());
-            movieComment.setRatingText(movieCommentDto.getRatingText());
+            movieComment.setRatingField(movieCommentReqDto.getRatingField());
+            movieComment.setRatingNum(movieCommentReqDto.getRatingNum());
+            movieComment.setRatingText(movieCommentReqDto.getRatingText());
 
             movieCommentRepository.save(movieComment);
             return true;
@@ -109,7 +110,7 @@ public class MovieCommentService {
 
     // 관람평 최신순 페이지 네이션
     public List<MovieCommentDto> getPagedMovieComments(int page, int size, Long movieId) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("commentRegdate")));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("commentRegDate")));
         Movie movie = movieRepository.findById(movieId).orElseThrow(
                 () -> new RuntimeException("해당하는 movieId값이 없습니다." + movieId)
         );
