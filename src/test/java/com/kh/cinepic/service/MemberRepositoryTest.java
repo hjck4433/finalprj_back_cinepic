@@ -1,6 +1,5 @@
 package com.kh.cinepic.service;
 
-
 import com.kh.cinepic.entity.Member;
 import com.kh.cinepic.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,10 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -89,14 +88,16 @@ public class MemberRepositoryTest {
 
     @Test
     @DisplayName("내 정보 요청 테스트")
-    public void memberDetailTest(){
+    public void memberDetailTest() {
+
         Member member = createMemberInfo();
         memberRepository.save(member);
-        Optional<Member> detailMember = memberRepository.findById(1L);
-
+        Member detailMember = memberRepository.findById(member.getId())
+                        .orElseThrow(() -> new RuntimeException("없는 회원입니다."));
         em.flush();
         em.clear();
-        System.out.println("memberDetailTest 결과 : " + detailMember);
+        System.out.println(" memberDetailTest결과 : " +detailMember);
+
     }
 
     @Test
