@@ -8,6 +8,5 @@ import java.util.Optional;
 
 public interface PreferRepository extends JpaRepository<Prefer,Long> {
     Optional<Prefer> findByMember(Member member);
-
     boolean existsByMember(Member member);
 }
