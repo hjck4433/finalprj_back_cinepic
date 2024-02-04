@@ -32,7 +32,7 @@ public class MovieService {
     }
 
     // movie관련 entity → DTO로 변환
-    private MovieDto convertEntityToDto (Movie movie) {
+    public MovieDto convertEntityToDto (Movie movie) {
         MovieDto movieDto = new MovieDto();
         movieDto.setMovieId(movie.getMovieId());
         movieDto.setMovieTitle(movie.getMovieTitle());
@@ -51,7 +51,7 @@ public class MovieService {
         return movieDto;
     }
 
-    private MovieDto convertDocToDto (MovieDocument movie) {
+    public MovieDto convertDocToDto (MovieDocument movie) {
         MovieDto movieDto = new MovieDto();
         movieDto.setMovieId(movie.getMovieId());
         movieDto.setMovieTitle(movie.getMovieTitle());
