@@ -77,4 +77,17 @@ public class MovieController {
         List<MovieCommentDto> list = movieCommentService.getPagedMovieComments(page, size, movieId);
         return ResponseEntity.ok(list);
     }
+
+    // 영화 리스트
+    @GetMapping("/searchlist")
+    public ResponseEntity<List<MovieDto>> searchMovies(
+            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+            @RequestParam(value = "sortType", required = false, defaultValue = "recent") String sortType,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "16") int size)  {
+
+        List<MovieDto> movies = movieService.searchMovies(keyword, sortType, page, size);
+
+        return ResponseEntity.ok(movies);
+    }
 }
