@@ -14,7 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.time.Month;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 @Transactional
@@ -42,7 +49,7 @@ public class MemberRepositoryTest {
 
     @Test
     @DisplayName("회원 정보 저장 테스트")
-    public void saveMemberTest(){
+    public void saveMemberTest() {
         Member member = createMemberInfo();
         Member testMember = memberRepository.save(member);
         em.flush();
@@ -52,14 +59,14 @@ public class MemberRepositoryTest {
 
     @Test
     @DisplayName("이메일 중복체크 테스트")
-    public void isUniqeEmailTest(){
+    public void isUniqeEmailTest() {
         Member member = createMemberInfo();
         memberRepository.save(member);
         boolean isUnique = memberRepository.existsByEmail("test0@gmail.com");
 
         em.flush();
         em.clear();
-        System.out.println("isUnique 결과 : " +isUnique);
+        System.out.println("isUnique 결과 : " + isUnique);
     }
 
     @Test
@@ -76,7 +83,7 @@ public class MemberRepositoryTest {
 
     @Test
     @DisplayName("전화번호 중복 테스트")
-    public void isUniquePhoneTest(){
+    public void isUniquePhoneTest() {
         Member member = createMemberInfo();
         memberRepository.save(member);
         boolean isPhoneUnique = memberRepository.existsByPhone("010-1111-2222");
@@ -93,10 +100,10 @@ public class MemberRepositoryTest {
         Member member = createMemberInfo();
         memberRepository.save(member);
         Member detailMember = memberRepository.findById(member.getId())
-                        .orElseThrow(() -> new RuntimeException("없는 회원입니다."));
+                .orElseThrow(() -> new RuntimeException("없는 회원입니다."));
         em.flush();
         em.clear();
-        System.out.println(" memberDetailTest결과 : " +detailMember);
+        System.out.println(" memberDetailTest결과 : " + detailMember);
 
     }
 
@@ -126,4 +133,23 @@ public class MemberRepositoryTest {
         em.clear();
         System.out.println("isMembership 결과 : " + isMembership);
     }
+
+
+    @Test
+    @DisplayName("회원 삭제 테스트")
+    public void deleteMember() {
+        Member member = createMemberInfo();
+
+        memberRepository.save(member);
+
+        memberRepository.deleteById(member.getId());
+        em.flush();
+        em.clear();
+        System.out.println("회원 삭제 테스트 : " + member.getId());
+
+
+    }
 }
+
+
+
