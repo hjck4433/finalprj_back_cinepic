@@ -35,7 +35,7 @@ public class MovieController {
     @GetMapping("/post/page/{movieId}")
     public ResponseEntity<Integer> getTotalMoviePostPages(@PathVariable Long movieId,
                                                           @RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "5") int size) {
+                                                          @RequestParam(defaultValue = "8") int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         int pageCnt = moviePostService.getTotalMoviePostPages(pageRequest, movieId);
         return ResponseEntity.ok(pageCnt);
@@ -45,7 +45,7 @@ public class MovieController {
     @GetMapping("/post/page/list/{movieId}")
     public ResponseEntity<List<MoviePostDto>> getPagedMoviePostList(@PathVariable Long movieId,
                                                                     @RequestParam(defaultValue = "0") int page,
-                                                                    @RequestParam(defaultValue = "5") int size) {
+                                                                    @RequestParam(defaultValue = "8") int size) {
         List<MoviePostDto> list = moviePostService.getPagedMoviePostList(page, size, movieId);
         return ResponseEntity.ok(list);
     }

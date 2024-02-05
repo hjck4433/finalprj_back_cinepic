@@ -129,7 +129,7 @@ public class MoviePostService {
         moviePostDto.setAlias(moviePost.getMember().getAlias());
         moviePostDto.setPostImage(moviePost.getPostImage());
         moviePostDto.setPostTitle(moviePost.getPostTitle());
-        moviePostDto.setPostContent(moviePostDto.getPostContent());
+        moviePostDto.setPostContent(moviePost.getPostContent());
         moviePostDto.setPostRegDate(moviePost.getPostRegDate());
         return moviePostDto;
     }
