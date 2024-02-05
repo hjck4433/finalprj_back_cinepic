@@ -33,6 +33,7 @@ public class PreferPythonService {
     private final MovieRepository movieRepository;
     private final PreferMovieRepository preferMovieRepository;
 
+
     // 회원 / 비회원 여부에 따라 영화 추천 다르게 요청
     public List<Map<String, MovieDto>> getMovieList(String genre) {
         List<Map<String, MovieDto>> movieList = new ArrayList<>();
@@ -56,7 +57,7 @@ public class PreferPythonService {
             Movie movie = movieRepository.findById(movieId)
                     .orElseThrow(() -> new RuntimeException("해당 영화가 없습니다."));
 
-            MovieDto movieDto = convertEntityToDto(movie);
+            MovieDto movieDto = MovieService.convertToDto(movie);
 
             Map<String, MovieDto> movieMap = new HashMap<>();
             movieMap.put(key, movieDto);
@@ -80,7 +81,7 @@ public class PreferPythonService {
         Movie recs1 = preferMovie.getRecs1();
         if (recs1 != null) {
             Map<String, MovieDto> recs1Map = new HashMap<>();
-            recs1Map.put("recs1", convertEntityToDto(recs1));
+            recs1Map.put("recs1", MovieService.convertToDto(recs1));
             movieList.add(recs1Map);
         }
 
@@ -88,7 +89,7 @@ public class PreferPythonService {
         Movie recs2 = preferMovie.getRecs2();
         if (recs2 != null) {
             Map<String, MovieDto> recs2Map = new HashMap<>();
-            recs2Map.put("recs2", convertEntityToDto(recs2));
+            recs2Map.put("recs2", MovieService.convertToDto(recs2));
             movieList.add(recs2Map);
         }
 
@@ -96,7 +97,7 @@ public class PreferPythonService {
         Movie recs3 = preferMovie.getRecs3();
         if (recs3 != null) {
             Map<String, MovieDto> recs3Map = new HashMap<>();
-            recs3Map.put("recs3", convertEntityToDto(recs3));
+            recs3Map.put("recs3", MovieService.convertToDto(recs3));
             movieList.add(recs3Map);
         }
 
@@ -104,7 +105,7 @@ public class PreferPythonService {
         Movie recs4 = preferMovie.getRecs4();
         if (recs4 != null) {
             Map<String, MovieDto> recs4Map = new HashMap<>();
-            recs4Map.put("recs4", convertEntityToDto(recs4));
+            recs4Map.put("recs4", MovieService.convertToDto(recs4));
             movieList.add(recs4Map);
         }
 
@@ -220,25 +221,4 @@ public class PreferPythonService {
         return preferDto;
     }
 
-    // Movie Entity MovieDto 변환
-    public MovieDto convertEntityToDto (Movie movie) {
-        MovieDto movieDto = new MovieDto();
-
-        movieDto.setMovieId(movie.getMovieId());
-        movieDto.setMovieTitle(movie.getMovieTitle());
-        movieDto.setMoviePoster(movie.getMoviePoster());
-        movieDto.setMovieTitleEng(movie.getMovieTitleEng());
-        movieDto.setMovieRelease(movie.getMovieRelease());
-        movieDto.setMovieGenre(movie.getMovieGenre());
-        movieDto.setMovieNation(movie.getMovieNation());
-        movieDto.setMovieGrade(movie.getMovieGrade());
-        movieDto.setMovieRuntime(movie.getMovieRuntime());
-        movieDto.setMovieScore(movie.getMovieScore());
-        movieDto.setMovieDirector(movie.getMovieDirector());
-        movieDto.setMovieActors(movie.getMovieActors());
-        movieDto.setMoviePlot(movie.getMoviePlot());
-        movieDto.setMovieStills(movie.getMovieStills());
-
-        return movieDto;
-    }
 }

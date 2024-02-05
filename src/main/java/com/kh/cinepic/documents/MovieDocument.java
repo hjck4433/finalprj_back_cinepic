@@ -1,5 +1,6 @@
 package com.kh.cinepic.documents;
 
+import com.kh.cinepic.common.MovieInfo;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -11,7 +12,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Getter @Setter
 @Document(indexName = "movies")
-public class MovieDocument {
+public class MovieDocument implements MovieInfo {
 
     @Id
     private Long movieId;

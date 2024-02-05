@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -86,13 +87,9 @@ public class BookmarkService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("id")));
         Page<Bookmark> bookmarks = bookmarkRepository.findAllByMember(member, pageable);
 
-        List<MovieDto> movieList = new ArrayList<>();
-
-        for(Bookmark bookmark : bookmarks) {
-            Movie movie = bookmark.getMovie();
-            MovieDto movieSearchDto = movieService.convertEntityToDto(movie);
-            movieList.add(movieSearchDto);
-        }
+        List<MovieDto> movieList = bookmarks.getContent().stream()
+                .map(bookmark -> MovieService.convertToDto(bookmark.getMovie()))
+                .collect(Collectors.toList());
 
         return movieList;
     }

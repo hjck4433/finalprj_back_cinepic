@@ -1,6 +1,7 @@
 package com.kh.cinepic.service;
 
 
+import com.kh.cinepic.common.MovieInfo;
 import com.kh.cinepic.documents.MovieDocument;
 import com.kh.cinepic.dto.MovieDto;
 import com.kh.cinepic.entity.Movie;
@@ -26,49 +27,10 @@ public class MovieService {
     public MovieDto getMovieDetail(Long movieId) {
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow();
-        MovieDto movieDto;
-        movieDto = convertEntityToDto(movie);
+        MovieDto movieDto = convertToDto(movie);
         return movieDto;
     }
 
-    // movie관련 entity → DTO로 변환
-    public MovieDto convertEntityToDto (Movie movie) {
-        MovieDto movieDto = new MovieDto();
-        movieDto.setMovieId(movie.getMovieId());
-        movieDto.setMovieTitle(movie.getMovieTitle());
-        movieDto.setMoviePoster(movie.getMoviePoster());
-        movieDto.setMovieTitleEng(movie.getMovieTitleEng());
-        movieDto.setMovieRelease(movie.getMovieRelease());
-        movieDto.setMovieGenre(movie.getMovieGenre());
-        movieDto.setMovieNation(movie.getMovieNation());
-        movieDto.setMovieGrade(movie.getMovieGrade());
-        movieDto.setMovieRuntime(movie.getMovieRuntime());
-        movieDto.setMovieScore(movie.getMovieScore());
-        movieDto.setMovieDirector(movie.getMovieDirector());
-        movieDto.setMovieActors(movie.getMovieActors());
-        movieDto.setMoviePlot(movie.getMoviePlot());
-        movieDto.setMovieStills(movie.getMovieStills());
-        return movieDto;
-    }
-
-    public MovieDto convertDocToDto (MovieDocument movie) {
-        MovieDto movieDto = new MovieDto();
-        movieDto.setMovieId(movie.getMovieId());
-        movieDto.setMovieTitle(movie.getMovieTitle());
-        movieDto.setMoviePoster(movie.getMoviePoster());
-        movieDto.setMovieTitleEng(movie.getMovieTitleEng());
-        movieDto.setMovieRelease(movie.getMovieRelease());
-        movieDto.setMovieGenre(movie.getMovieGenre());
-        movieDto.setMovieNation(movie.getMovieNation());
-        movieDto.setMovieGrade(movie.getMovieGrade());
-        movieDto.setMovieRuntime(movie.getMovieRuntime());
-        movieDto.setMovieScore(movie.getMovieScore());
-        movieDto.setMovieDirector(movie.getMovieDirector());
-        movieDto.setMovieActors(movie.getMovieActors());
-        movieDto.setMoviePlot(movie.getMoviePlot());
-        movieDto.setMovieStills(movie.getMovieStills());
-        return movieDto;
-    }
 
     public List<MovieDto> searchMovies(String keyword,String sortType, int page, int size) {
         Page<MovieDocument> moviePage;
@@ -89,12 +51,32 @@ public class MovieService {
             moviePage = movieDocRepository.findByKeyword(keyword, pageable);
         }
 
-        // Convert each MovieDocument to MovieDto
+        // MovieDocument 를 Dto로 변환
         List<MovieDto> movieDtos = moviePage.getContent().stream()
-                .map(this::convertDocToDto)
+                .map(MovieService::convertToDto)
                 .collect(Collectors.toList());
 
         return movieDtos;
+    }
+
+    // Entity 또는 Document Dto로 변환
+    public static <T extends MovieInfo> MovieDto convertToDto(T movieInfo) {
+        MovieDto movieDto = new MovieDto();
+        movieDto.setMovieId(movieInfo.getMovieId());
+        movieDto.setMovieTitle(movieInfo.getMovieTitle());
+        movieDto.setMoviePoster(movieInfo.getMoviePoster());
+        movieDto.setMovieTitleEng(movieInfo.getMovieTitleEng());
+        movieDto.setMovieRelease(movieInfo.getMovieRelease());
+        movieDto.setMovieGenre(movieInfo.getMovieGenre());
+        movieDto.setMovieNation(movieInfo.getMovieNation());
+        movieDto.setMovieGrade(movieInfo.getMovieGrade());
+        movieDto.setMovieRuntime(movieInfo.getMovieRuntime());
+        movieDto.setMovieScore(movieInfo.getMovieScore());
+        movieDto.setMovieDirector(movieInfo.getMovieDirector());
+        movieDto.setMovieActors(movieInfo.getMovieActors());
+        movieDto.setMoviePlot(movieInfo.getMoviePlot());
+        movieDto.setMovieStills(movieInfo.getMovieStills());
+        return movieDto;
     }
 
 }

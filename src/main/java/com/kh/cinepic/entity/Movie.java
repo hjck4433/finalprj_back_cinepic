@@ -1,6 +1,7 @@
 package com.kh.cinepic.entity;
 
 
+import com.kh.cinepic.common.MovieInfo;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Getter @Setter
 @ToString
 @NoArgsConstructor
-public class Movie {
+public class Movie implements MovieInfo {
     @Id
     @Column(name = "movie_id") // 영화 ID
     private Long movieId;
