@@ -63,6 +63,57 @@ public class BoardController {
         return ResponseEntity.ok(boardService.addCount(postId));
     }
 
+    // 게시글 총 페이지 수
+    @GetMapping("/totalpages")
+    public ResponseEntity<Integer> getBoardTotalPages (
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String categoryName,
+            @RequestParam(required = false) String gatherType
+    ) {
+        log.info("totalpages 진입");
+        int totalPages = boardService.getBoardListPage(page, size, keyword, categoryName, gatherType);
+        log.info("보드 총 페이지 : {}", totalPages);
+        return ResponseEntity.ok(totalPages);
+    }
+
+    // 게시글 리스트
+    @GetMapping("/processedlist")
+    public ResponseEntity<List<BoardResDto>> getProcessedBoardList (
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size,
+            @RequestParam(defaultValue = "recent") String sort,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = true) String categoryName,
+            @RequestParam(required = true) String gatherType
+    ) {
+        List<BoardResDto> boardList = boardService.getProcessedBoardList(page, size, sort, keyword, categoryName, gatherType);
+        return ResponseEntity.ok(boardList);
+    }
+
+    // 회원이 작성한 보드 / 댓글 포함 보드 페이지 수
+    @GetMapping("/memboard/page")
+    public ResponseEntity<Integer> getMemBoardPages (
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size,
+            @RequestParam(defaultValue = "written") String type
+    ) {
+        Long id = SecurityUtil.getCurrentMemberId();
+        PageRequest pageRequest = PageRequest.of(page, size);
+        int totalPages = boardService.searchMemBoardPage(id, type, pageRequest);
+        return ResponseEntity.ok(totalPages);
+    }
+    // 회원이 작성한 보드 / 댓글 포함 게시글 리스트
+    public ResponseEntity<List<BoardResDto>> getMemBoardList (
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size,
+            @RequestParam(defaultValue = "written") String type
+    ) {
+        Long id = SecurityUtil.getCurrentMemberId();
+        List<BoardResDto> memBoardList = boardService.searchMemBoardList(id, type, page, size);
+        return ResponseEntity.ok(memBoardList);
+    }
 
     // Admin
     // 게시글 리스트 조회(페이지네이션)

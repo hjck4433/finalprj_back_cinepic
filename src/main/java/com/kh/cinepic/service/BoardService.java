@@ -10,14 +10,17 @@ import com.kh.cinepic.repository.CategoryRepository;
 import com.kh.cinepic.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -132,6 +135,79 @@ public class BoardService {
             log.error("페이지수 증가 중 오류 : {}", (Object) e.getStackTrace());
             return false;
         }
+    }
+
+    // 페이지네이션 관련
+    public List<BoardResDto> getProcessedBoardList(int page, int size, String sort, String keyword, String categoryName, String gatherType) {
+        List<BoardResDto> boardList = new ArrayList<>();
+
+        if(sort.equalsIgnoreCase("recent")) {
+            Pageable pageableRecent = PageRequest.of(page, size, Sort.by(Sort.Order.desc("regdate"), Sort.Order.asc("title")));
+            // 검색어가 있는 경우
+            boardList = searchBoardList(keyword, categoryName, gatherType, pageableRecent);
+        } else if (sort.equalsIgnoreCase("former")) {
+            Pageable pageableFormer = PageRequest.of(page, size, Sort.by(Sort.Order.asc("regdate"), Sort.Order.asc("title")));
+            // 검색어가 있는 경우
+            boardList = searchBoardList(keyword, categoryName, gatherType, pageableFormer);
+        }
+        return boardList;
+    }
+    public List<BoardResDto> searchBoardList(String keyword, String categoryName, String gatherType, Pageable pageable) {
+        Page<Board> boards = boardRepository.findByKeywordAndCategoryNameAndGatherType(
+                keyword, categoryName, gatherType, pageable);
+        return boards.stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
+    }
+    // 페이지 수 조회
+    public int getBoardListPage(int page, int size, String keyword, String categoryName, String gatherType) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Board> boards = boardRepository.findByKeywordAndCategoryNameAndGatherType(
+                keyword,
+                categoryName,
+                gatherType,
+                pageable
+        );
+        int totalPages = boards.getTotalPages();
+        if (totalPages > 0 && page >= totalPages) {
+            return totalPages - 1;
+        }
+        return totalPages;
+    }
+    // 회원이 작성한 보드 / 댓글 포함 보드 리스트
+    public List<BoardResDto> searchMemBoardList(Long id, String type, int page, int size) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("해당하는 회원이 없습니다."));
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("regdate"), Sort.Order.asc("title")));
+
+        List<BoardResDto> boardList = new ArrayList<>();
+        if(type.equalsIgnoreCase("written")) {
+            Page<Board> boards = boardRepository.findByMember(member, pageable);
+            boardList = boards.stream()
+                    .map(this::convertEntityToDto)
+                    .collect(Collectors.toList());
+        } else if (type.equalsIgnoreCase("comment")) {
+            Page<Board> boards = boardRepository.findByCommentingMember(member, pageable);
+            boardList = boards.stream()
+                    .map(this::convertEntityToDto)
+                    .collect(Collectors.toList());
+        }
+        return boardList;
+    }
+    // 회원이 작성한 보드 / 댓글 포함 보드 리스트 - 페이지 수
+    public int searchMemBoardPage(Long id, String type, Pageable pageable) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("해당하는 회원이 없습니다."));
+        int totalPages = 0;
+        if (type.equalsIgnoreCase("written")) {
+            Page<Board> boards = boardRepository.findByMember(member, pageable);
+            totalPages = boards.getTotalPages();
+        } else if (type.equalsIgnoreCase("comment")) {
+            Page<Board> boards = boardRepository.findByCommentingMember(member, pageable);
+            totalPages = boards.getTotalPages();
+        }
+        return totalPages;
     }
 
     // 게시글 엔티티를 DTO로 변환

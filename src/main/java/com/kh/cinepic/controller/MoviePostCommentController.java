@@ -24,6 +24,7 @@ public class MoviePostCommentController {
     // 포스트 저장
     @PostMapping("/post/new")
     public ResponseEntity<Boolean> saveMoviePost(@RequestBody MoviePostReqDto moviePostReqDto) {
+        log.info("back - 포스트 저장 진입");
         Long id = SecurityUtil.getCurrentMemberId();
         return ResponseEntity.ok(moviePostService.saveMoviePost(moviePostReqDto, id));
     }
