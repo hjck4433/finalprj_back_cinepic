@@ -119,6 +119,21 @@ public class BoardService {
         }
     }
 
+    // 조회 수
+    public boolean addCount(Long postId) {
+        try {
+            Board board = boardRepository.findById(postId)
+                    .orElseThrow(() -> new RuntimeException("해당하는 게시글이 없습니다."));
+            int count = board.getCount();
+            board.setCount(count+1);
+            boardRepository.save(board);
+            return true;
+        }catch (Exception e) {
+            log.error("페이지수 증가 중 오류 : {}", (Object) e.getStackTrace());
+            return false;
+        }
+    }
+
     // 게시글 엔티티를 DTO로 변환
     private BoardResDto convertEntityToDto (Board board) {
         BoardResDto boardResDto = new BoardResDto();
@@ -131,7 +146,7 @@ public class BoardService {
         boardResDto.setImage(board.getImage());
         boardResDto.setGatherType(board.getGatherType());
         boardResDto.setRegDate(board.getRegDate());
-//        boardResDto.setCount(board.getCount());
+        boardResDto.setCount(board.getCount());
         return boardResDto;
     }
 

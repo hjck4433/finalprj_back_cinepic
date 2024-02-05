@@ -20,6 +20,6 @@ public class BoardResDto {
     private String title;
     private String image;
     private String boardContent;
-//    private int count;
+    private int count;
     private LocalDateTime regDate;
 }

@@ -57,6 +57,12 @@ public class BoardController {
         return ResponseEntity.ok(boardResDto);
     }
 
+    @PutMapping("/post/counter")
+    public ResponseEntity<Boolean> boardCounter(@RequestBody Long postId) {
+        log.info("게시판 조회수 올리는 중 post Id : {}", postId);
+        return ResponseEntity.ok(boardService.addCount(postId));
+    }
+
 
     // Admin
     // 게시글 리스트 조회(페이지네이션)
