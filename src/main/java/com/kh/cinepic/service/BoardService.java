@@ -142,11 +142,11 @@ public class BoardService {
         List<BoardResDto> boardList = new ArrayList<>();
 
         if(sort.equalsIgnoreCase("recent")) {
-            Pageable pageableRecent = PageRequest.of(page, size, Sort.by(Sort.Order.desc("regdate"), Sort.Order.asc("title")));
+            Pageable pageableRecent = PageRequest.of(page, size, Sort.by(Sort.Order.desc("regDate"), Sort.Order.asc("title")));
             // 검색어가 있는 경우
             boardList = searchBoardList(keyword, categoryName, gatherType, pageableRecent);
         } else if (sort.equalsIgnoreCase("former")) {
-            Pageable pageableFormer = PageRequest.of(page, size, Sort.by(Sort.Order.asc("regdate"), Sort.Order.asc("title")));
+            Pageable pageableFormer = PageRequest.of(page, size, Sort.by(Sort.Order.asc("regDate"), Sort.Order.asc("title")));
             // 검색어가 있는 경우
             boardList = searchBoardList(keyword, categoryName, gatherType, pageableFormer);
         }
@@ -179,7 +179,7 @@ public class BoardService {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("해당하는 회원이 없습니다."));
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("regdate"), Sort.Order.asc("title")));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("regDate"), Sort.Order.asc("title")));
 
         List<BoardResDto> boardList = new ArrayList<>();
         if(type.equalsIgnoreCase("written")) {

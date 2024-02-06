@@ -105,6 +105,7 @@ public class BoardController {
         return ResponseEntity.ok(totalPages);
     }
     // 회원이 작성한 보드 / 댓글 포함 게시글 리스트
+    @GetMapping("/memboard/list")
     public ResponseEntity<List<BoardResDto>> getMemBoardList (
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "6") int size,
