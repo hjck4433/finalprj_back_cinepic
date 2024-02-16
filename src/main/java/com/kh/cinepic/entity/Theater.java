@@ -12,7 +12,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Theater {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "theater_id")
     private Long theaterId;
 

@@ -31,7 +31,9 @@ public class TheaterRepositoryTest {
 
     // 극장 정보 입력
     public Theater createTheaterInfo() {
+        long id = 1234;
         Theater theater = new Theater();
+        theater.setTheaterId(id);
         theater.setTheaterAddr("강원도 춘천시 퇴계동 1017번지");
         theater.setTheaterName("CGV 춘천");
         theater.setTheaterPhone("1544-1122");
