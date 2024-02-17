@@ -47,6 +47,15 @@ public class AuthService {
             case 2:
                 isUnique = memberRepository.existsByPhone(info);
                 break;
+            case 3:
+                if(memberRepository.existsByEmail(info)) {
+                    Member member = memberRepository.findByEmail(info)
+                            .orElseThrow(() -> new RuntimeException("해당 이메일로 회원이 존재하지 않습니다"));
+                    isUnique= !member.isKakao();
+                }else {
+                    isUnique = false;
+                }
+                break;
             default: isUnique = true; log.info("중복체크 구분이 잘 못 되었습니다.");
         }
         return isUnique;
@@ -104,6 +113,29 @@ public class AuthService {
             throw new RuntimeException("로그인 중 에러 발생", e);
         }
 
+    }
+
+    // 비밀번호 변경
+    public boolean changePw (MemberReqDto memberReqDto) {
+        try {
+            Member member = memberRepository.findByEmail(memberReqDto.getEmail())
+                    .orElseThrow(() -> new RuntimeException("해당 이메일의 회원이 없습니다."));
+
+            // 카카오 회원인 경우 비밀번호 수정 X
+            log.info("카카오 회원? : {}", member.isKakao());
+            if(!member.isKakao()){
+                member.setPassword(passwordEncoder.encode(memberReqDto.getPassword()));
+            }else {
+                return false;
+            }
+
+            memberRepository.save(member);
+
+            return true;
+        }catch (Exception e) {
+            log.error("비밀번호 변경 중 에러 : ", e);
+            return false;
+        }
     }
 
     // 관리자 추가

@@ -43,6 +43,12 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(memberReqDto));
     }
 
+    // Member 비밀번호 변경
+    @PostMapping("/chgPw")
+    public ResponseEntity<Boolean> chgPw(@RequestBody MemberReqDto memberReqDto) {
+        return ResponseEntity.ok(authService.changePw(memberReqDto));
+    }
+
     // Admin 추가 (Swagger 등을 통해서 추가)
     @PostMapping("/newadmin")
     public ResponseEntity<Boolean> addAdmin(@RequestBody AdminReqDto adminReqDto){

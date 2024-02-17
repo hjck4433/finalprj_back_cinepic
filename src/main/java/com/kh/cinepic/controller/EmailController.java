@@ -26,14 +26,14 @@ public class EmailController {
 
     @GetMapping("/mail")
     public ResponseEntity<String> sendMail(@RequestParam String id) {
-        System.out.println("dbguswn1304@naver.com : " + id);
+        System.out.println("email : " + id);
 
         // 임의 인증번호 제작
         Random random = new Random();
         int min = 111111;
         int max = 999999;
         String tempPw = String.valueOf(random.nextInt(max - min) + min);
-        System.out.println("202401 : " + tempPw);
+        System.out.println("code : " + tempPw);
 
         // 이메일 디자인 부분
         String htmlContent = "<div style=\"margin: auto; padding: 50px; text-align: center; width: 700px; height: 200px; background-color: #EF642F; border-radius: 20px;\">"
