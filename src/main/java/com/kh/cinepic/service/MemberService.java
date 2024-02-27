@@ -113,7 +113,7 @@ public class MemberService {
             }
 
             member.setEmail(member.getEmail().concat("-"));
-            member.setPhone("");
+            member.setPhone(Long.toString(id));
             member.setAddr("");
             member.setName("");
             memberRepository.save(member);
